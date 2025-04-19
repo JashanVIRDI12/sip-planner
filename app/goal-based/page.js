@@ -80,9 +80,9 @@ export default function GoalBasedSIP() {
 
                 <div className="bg-[#1f2937] p-6 rounded-xl border border-blue-700 shadow-md">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        <InputField label="🎯 Target Amount (₹)" value={target} onChange={setTarget} />
-                        <InputField label="📈 Expected Return Rate (% p.a.)" value={rate} onChange={setRate} />
-                        <InputField label="📅 Years to Goal" value={years} onChange={setYears} />
+                        <InputField label="Target Amount (₹)" value={target} onChange={setTarget} />
+                        <InputField label="Expected Return Rate (% p.a.)" value={rate} onChange={setRate} />
+                        <InputField label="Years to Goal" value={years} onChange={setYears} />
                     </div>
                     <button
                         onClick={handleCalculate}

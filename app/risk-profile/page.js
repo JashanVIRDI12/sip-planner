@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 
 const questions = [
@@ -104,6 +104,7 @@ const profileStyles = {
 export default function RiskProfilePage() {
     const [answers, setAnswers] = useState({})
     const [profile, setProfile] = useState(null)
+    const resultRef = useRef(null)
 
     useEffect(() => {
         document.documentElement.classList.add('dark')
@@ -125,6 +126,10 @@ export default function RiskProfilePage() {
         const result = getRiskProfile(totalScore)
         setProfile(result)
         localStorage.setItem('riskProfile', result)
+
+        setTimeout(() => {
+            resultRef.current?.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
     }
 
     return (
@@ -170,6 +175,7 @@ export default function RiskProfilePage() {
 
                 {profile && (
                     <motion.div
+                        ref={resultRef}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
@@ -195,7 +201,6 @@ export default function RiskProfilePage() {
         </main>
     )
 }
-
 
 
 

@@ -47,13 +47,20 @@ function calculateSIP(monthlyInvestment, rate, years) {
     return { futureValue: futureValue.toFixed(2), chartData: data }
 }
 
-// 🔹 Summary Tile
+// 🔹 Summary Tile with CountUp
 function SummaryTile({ label, value, color }) {
     return (
         <div className="bg-white/5 border border-blue-500/30 backdrop-blur-lg p-4 rounded-xl shadow-md hover:shadow-xl transition-all duration-300">
             <p className="text-gray-400 text-xs mb-1">{label}</p>
             <p className={`font-semibold text-lg sm:text-xl ${color}`}>
-                ₹<CountUp end={value} duration={2.5} separator="," />
+                ₹
+                <CountUp
+                    end={parseFloat(value)}
+                    duration={2}
+                    separator=","
+                    decimals={0}
+                    formattingFn={(val) => val.toLocaleString('en-IN')}
+                />
             </p>
         </div>
     )
@@ -86,7 +93,7 @@ function ChartAndTable({ data }) {
         <>
             <div className="h-72 mt-6">
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={data} margin={{ top: 20, right: 30, bottom: 5, left: 25 }}>
+                    <LineChart data={data} margin={{ top: 20, right: 20, bottom: 5, left: 20 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                         <XAxis dataKey="year" stroke="#ccc" />
                         <YAxis
@@ -100,24 +107,14 @@ function ChartAndTable({ data }) {
                         />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend />
-                        <Line type="monotone" dataKey="value" stroke="#60a5fa" strokeWidth={3} dot={false} name="Future Value" />
+                        <Line type="monotone" dataKey="value" stroke="#60a5fa" strokeWidth={2} dot={false} name="Future Value" />
                         <Line type="monotone" dataKey="initial" stroke="#10b981" strokeDasharray="5 5" strokeWidth={2} dot={false} name="Initial Investment" />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
 
-            <div className="mt-6">
-                <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-lg font-semibold text-blue-300">Yearly Breakdown</h3>
-                    <button
-                        onClick={exportToCSV}
-                        className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-sm px-4 py-1 rounded"
-                    >
-                        Export CSV
-                    </button>
-                </div>
-
-                <div className="overflow-auto text-sm rounded-lg border border-blue-700">
+            <div className="mt-6 overflow-x-auto text-sm rounded-lg border border-blue-700">
+                <div className="min-w-[500px]">
                     <table className="w-full text-left text-sm text-gray-300">
                         <thead className="bg-gradient-to-r from-blue-900 to-blue-700 text-blue-200">
                         <tr>
@@ -179,14 +176,14 @@ function RiskBasedCard({ profile }) {
 }
 
 // 🔹 Input Field
-const Input = React.forwardRef(({ label, type = 'number', ...props }, ref) => (
+const Input = React.forwardRef(({ label, type = 'tel', ...props }, ref) => (
     <div className="mb-4">
         <label className="block text-sm font-medium text-gray-300 mb-1">{label}</label>
         <input
             type={type}
             ref={ref}
             {...props}
-            placeholder="Enter value "
+            placeholder="Enter value"
             className="w-full bg-[#111827] text-white rounded-lg border border-gray-600 px-3 py-2 text-sm outline-none ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-blue-500"
         />
     </div>
@@ -218,7 +215,7 @@ export default function SipCalculatorPage() {
     return (
         <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-10">
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-cyan-500 text-transparent bg-clip-text animate-gradient-x">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-cyan-500 text-transparent bg-clip-text animate-gradient-x">
                     Regular SIP Calculator
                 </h1>
 
@@ -239,11 +236,11 @@ export default function SipCalculatorPage() {
                 {result && (
                     <>
                         <div className="mt-10 bg-gradient-to-br from-[#1f2937] to-[#111827] p-6 rounded-2xl border border-blue-700 shadow-2xl">
-                            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-500 text-transparent bg-clip-text mb-6 text-center">
+                            <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-500 text-transparent bg-clip-text mb-6 text-center">
                                 Investment Summary
                             </h2>
 
-                            <div className="grid sm:grid-cols-3 gap-6 text-center text-white text-sm sm:text-base mb-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-center text-white text-sm sm:text-base mb-6">
                                 <SummaryTile label="Initial Investment" value={result.monthlyInvestment * result.duration * 12} color="text-blue-400" />
                                 <SummaryTile label="Future Value" value={parseFloat(result.futureValue)} color="text-cyan-400" />
                                 <SummaryTile label="Total Gains" value={parseFloat(result.futureValue) - result.monthlyInvestment * result.duration * 12} color="text-green-400" />
@@ -257,6 +254,8 @@ export default function SipCalculatorPage() {
         </main>
     )
 }
+
+
 
 
 

@@ -11,7 +11,6 @@ import {
     Legend,
 } from 'recharts'
 
-// ✨ Custom Tooltip with blur and hover animation
 function CustomTooltip({ active, payload }) {
     if (active && payload && payload.length) {
         return (
@@ -28,7 +27,6 @@ function CustomTooltip({ active, payload }) {
     return null
 }
 
-// 🧮 SIP Calculation Logic
 function calculateRequiredSIP(goal, rate, years) {
     const months = years * 12
     const monthlyRate = rate / 12 / 100
@@ -75,20 +73,20 @@ export default function GoalBasedSIP() {
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12">
-            <div className="max-w-4xl mx-auto">
-                <h1 className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-blue-400 to-cyan-500 text-transparent bg-clip-text animate-gradient-x">
+            <div className="max-w-5xl mx-auto">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-blue-400 to-cyan-500 text-transparent bg-clip-text animate-gradient-x">
                     Goal-Based SIP Calculator
                 </h1>
 
                 <div className="bg-[#1f2937] p-6 rounded-xl border border-blue-700 shadow-md">
-                    <div className="grid md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         <InputField label="🎯 Target Amount (₹)" value={target} onChange={setTarget} />
                         <InputField label="📈 Expected Return Rate (% p.a.)" value={rate} onChange={setRate} />
                         <InputField label="📅 Years to Goal" value={years} onChange={setYears} />
                     </div>
                     <button
                         onClick={handleCalculate}
-                        className="mt-6 w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 py-3 rounded-lg font-bold transition"
+                        className="mt-6 w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-bold transition"
                     >
                         Calculate SIP
                     </button>
@@ -96,7 +94,7 @@ export default function GoalBasedSIP() {
 
                 {result && (
                     <div className="mt-10 bg-[#1f2937] p-6 rounded-xl border border-blue-700">
-                        <h2 className="text-2xl font-semibold text-center text-blue-300 mb-2">
+                        <h2 className="text-xl sm:text-2xl font-semibold text-center text-blue-300 mb-2">
                             Required SIP: ₹{result.sip}/month
                         </h2>
                         <p className="text-center text-sm text-gray-400 mb-6">
@@ -106,7 +104,7 @@ export default function GoalBasedSIP() {
                         <ResponsiveContainer width="100%" height={300}>
                             <LineChart
                                 data={result.chartData}
-                                margin={{ top: 20, right: 30, bottom: 5, left: 60 }} // <-- increased left margin
+                                margin={{ top: 20, right: 20, bottom: 5, left: 20 }}
                             >
                                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                                 <XAxis dataKey="year" stroke="#aaa" />
@@ -126,7 +124,7 @@ export default function GoalBasedSIP() {
                                     type="monotone"
                                     dataKey="value"
                                     stroke="#60a5fa"
-                                    strokeWidth={3}
+                                    strokeWidth={2}
                                     name="Future Value"
                                     dot={false}
                                 />
@@ -141,27 +139,29 @@ export default function GoalBasedSIP() {
                             </LineChart>
                         </ResponsiveContainer>
 
-                        <div className="mt-6 overflow-auto rounded-lg border border-blue-800">
-                            <table className="min-w-full text-sm text-left text-gray-300">
-                                <thead className="bg-gradient-to-r from-blue-900 to-blue-700 text-blue-200">
-                                <tr>
-                                    <th className="px-4 py-3">Year</th>
-                                    <th className="px-4 py-3">Invested</th>
-                                    <th className="px-4 py-3">Future Value</th>
-                                    <th className="px-4 py-3">Gains</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {result.chartData.map((row) => (
-                                    <tr key={row.year} className="odd:bg-gray-900 even:bg-gray-800 border-b border-gray-700 hover:bg-blue-950/30 transition duration-200">
-                                        <td className="px-4 py-3">{row.year}</td>
-                                        <td className="px-4 py-3">₹{row.invested.toLocaleString('en-IN')}</td>
-                                        <td className="px-4 py-3">₹{row.value.toLocaleString('en-IN')}</td>
-                                        <td className="px-4 py-3 text-green-400">₹{row.gains.toLocaleString('en-IN')}</td>
+                        <div className="mt-6 w-full overflow-x-auto">
+                            <div className="min-w-[500px]">
+                                <table className="min-w-full text-sm text-left text-gray-300">
+                                    <thead className="bg-gradient-to-r from-blue-900 to-blue-700 text-blue-200">
+                                    <tr>
+                                        <th className="px-4 py-3">Year</th>
+                                        <th className="px-4 py-3">Invested</th>
+                                        <th className="px-4 py-3">Future Value</th>
+                                        <th className="px-4 py-3">Gains</th>
                                     </tr>
-                                ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    {result.chartData.map((row) => (
+                                        <tr key={row.year} className="odd:bg-gray-900 even:bg-gray-800 border-b border-gray-700 hover:bg-blue-950/30 transition duration-200">
+                                            <td className="px-4 py-3">{row.year}</td>
+                                            <td className="px-4 py-3">₹{row.invested.toLocaleString('en-IN')}</td>
+                                            <td className="px-4 py-3">₹{row.value.toLocaleString('en-IN')}</td>
+                                            <td className="px-4 py-3 text-green-400">₹{row.gains.toLocaleString('en-IN')}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -175,7 +175,7 @@ function InputField({ label, value, onChange }) {
         <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">{label}</label>
             <input
-                type="number"
+                type="tel"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder="Enter value..."
@@ -184,6 +184,7 @@ function InputField({ label, value, onChange }) {
         </div>
     )
 }
+
 
 
 

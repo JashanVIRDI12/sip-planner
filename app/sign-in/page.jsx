@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import { Eye, EyeOff } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function AuthPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')

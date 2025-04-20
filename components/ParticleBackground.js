@@ -1,47 +1,83 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import Particles from 'react-tsparticles';
 import { loadSlim } from 'tsparticles-slim';
 
-const ParticleBackground = () => {
+const ParticleLayer = ({ zIndex, particleSize, speed, opacity, count }) => {
     const particlesInit = useCallback(async (engine) => {
         await loadSlim(engine);
     }, []);
 
     return (
         <Particles
-            id="tsparticles"
+            id={`tsparticles-layer-${zIndex}`}
             init={particlesInit}
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex,
+                pointerEvents: 'none',
+            }}
             options={{
-                fullScreen: { enable: true },
+                fullScreen: { enable: false },
                 background: { color: '#0f172a' },
-                particles: {
-                    number: { value: 50 },
-                    color: { value: '#ffffff' },
-                    shape: { type: 'circle' },
-                    opacity: { value: 0.5 },
-                    size: { value: { min: 1, max: 3 } },
-                    move: { enable: true, speed: 1 },
-                    links: {
-                        enable: true,
-                        distance: 150,
-                        color: '#ffffff',
-                        opacity: 0.4,
-                        width: 1,
-                    },
-                },
+                fpsLimit: 60,
+                detectRetina: true,
                 interactivity: {
+                    detectsOn: 'canvas',
                     events: {
-                        onHover: { enable: true, mode: 'repulse' },
-                        onClick: { enable: true, mode: 'push' },
+                        onHover: { enable: true, mode: 'slow' },
+                        resize: true,
                     },
                     modes: {
-                        repulse: { distance: 100 },
-                        push: { quantity: 4 },
+                        slow: {
+                            factor: 0.5,
+                            radius: 120,
+                        },
                     },
                 },
-                detectRetina: true,
+                particles: {
+                    number: { value: count, density: { enable: true, area: 1000 } },
+                    color: { value: '#38bdf8' },
+                    shape: { type: 'circle' },
+                    size: { value: particleSize },
+                    opacity: { value: opacity },
+                    move: {
+                        enable: true,
+                        speed,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        outModes: { default: 'out' },
+                    },
+                },
             }}
         />
+    );
+};
+
+const ParticleBackground = () => {
+    return (
+        <>
+            {/* Background layer - small, slow, faint */}
+            <ParticleLayer
+                zIndex={0}
+                particleSize={1}
+                speed={0.2}
+                opacity={0.1}
+                count={40}
+            />
+            {/* Foreground layer - bigger, faster, more vivid */}
+            <ParticleLayer
+                zIndex={1}
+                particleSize={2}
+                speed={0.6}
+                opacity={0.3}
+                count={30}
+            />
+        </>
     );
 };
 

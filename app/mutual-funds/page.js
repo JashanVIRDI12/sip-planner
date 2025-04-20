@@ -8,22 +8,27 @@ import {
     Tooltip,
     Legend,
 } from 'recharts'
-import RiskReturnChartToggle from "@/components/RiskReturnChartToggle";
+import ReactMarkdown from 'react-markdown'
+import RiskReturnChartToggle from "@/components/RiskReturnChartToggle"
+import { fetchAIResponse } from "../utils/openRouterClient"
 
 const allocations = {
     Conservative: [
-        { name: 'Equity', value: 20 },
-        { name: 'Debt', value: 70 },
+        { name: 'Equity', value: 10 },
+        { name: 'Hybrid', value: 20 },
+        { name: 'Debt', value: 60 },
         { name: 'Gold', value: 10 },
     ],
     Moderate: [
         { name: 'Equity', value: 50 },
-        { name: 'Debt', value: 40 },
+        { name: 'Hybrid', value: 20 },
+        { name: 'Debt', value: 20 },
         { name: 'Gold', value: 10 },
     ],
     Aggressive: [
-        { name: 'Equity', value: 75 },
-        { name: 'Debt', value: 20 },
+        { name: 'Equity', value: 80 },
+        { name: 'Hybrid', value: 10 },
+        { name: 'Debt', value: 5 },
         { name: 'Gold', value: 5 },
     ],
 }
@@ -37,6 +42,10 @@ const fundRecommendations = {
         { name: 'SBI Bluechip Fund', type: 'Large Cap Fund', code: '119564', amc: 'SBI' },
         { name: 'Axis Midcap Fund', type: 'Mid Cap Fund', code: '119715', amc: 'Axis' },
     ],
+    Hybrid: [
+        { name: 'ICICI Prudential Equity & Debt Fund', type: 'Aggressive Hybrid', code: '119353', amc: 'ICICI' },
+        { name: 'HDFC Balanced Advantage Fund', type: 'Dynamic Asset Allocation', code: '119433', amc: 'HDFC' },
+    ],
     Debt: [
         { name: 'DSP Gilt Fund', type: 'Gilt Fund', code: '119101', amc: 'DSP' },
         { name: 'HDFC Corporate Bond Fund', type: 'Corporate Bond Fund', code: '132849', amc: 'HDFC' },
@@ -49,7 +58,7 @@ const fundRecommendations = {
     ],
 }
 
-const COLORS = ['#60a5fa', '#34d399', '#fbbf24']
+const COLORS = ['#60a5fa', '#34d399', '#f87171', '#fbbf24']
 
 function FundCard({ fund }) {
     const [navData, setNavData] = useState(null)
@@ -87,6 +96,8 @@ function FundCard({ fund }) {
 export default function MutualFundPage() {
     const [profile, setProfile] = useState(null)
     const [allocationData, setAllocationData] = useState([])
+    const [aiMessage, setAiMessage] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const stored = localStorage.getItem('riskProfile')
@@ -95,6 +106,30 @@ export default function MutualFundPage() {
             setAllocationData(allocations[stored])
         }
     }, [])
+
+    useEffect(() => {
+        async function getAISuggestion() {
+            if (!profile) return
+            setIsLoading(true)
+            const prompt = `You are a professional investment advisor.
+
+Based on this asset allocation for a ${profile.toLowerCase()}-risk profile investor in India:
+${allocations[profile].map(a => `${a.name} - ${a.value}%`).join(', ')}.
+
+Suggest a realistic and beginner-friendly SIP investment strategy using 2-3 mutual fund examples per category. 
+Structure the output in **clear bullet points or paragraphs** — do **not** use markdown tables or divider lines (e.g., \`|---|\`).
+
+Keep the response under 150 words. 
+Use a helpful, concise, and confident tone, as if you're guiding a new investor.
+`
+
+            const result = await fetchAIResponse([{ role: "user", content: prompt }])
+            setAiMessage(result)
+            setIsLoading(false)
+        }
+
+        getAISuggestion()
+    }, [profile])
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12">
@@ -106,6 +141,21 @@ export default function MutualFundPage() {
                         <p className="text-center text-lg mb-4">
                             Based on your <span className="text-blue-400 font-semibold">{profile}</span> risk profile
                         </p>
+
+                        <div className="bg-[#1f2937] border border-purple-600 text-purple-300 rounded-lg p-4 mb-6 text-sm leading-relaxed">
+                            <h3 className="font-semibold text-purple-400 mb-2">💡 AI Suggestion</h3>
+                            {isLoading ? (
+                                <div className="animate-pulse space-y-2">
+                                    <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+                                    <div className="h-4 bg-gray-700 rounded w-full"></div>
+                                    <div className="h-4 bg-gray-700 rounded w-5/6"></div>
+                                </div>
+                            ) : (
+                                <div className="prose prose-invert prose-sm max-w-none">
+                                    <ReactMarkdown>{aiMessage}</ReactMarkdown>
+                                </div>
+                            )}
+                        </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                             <div className="bg-[#1f2937] rounded-lg border border-gray-700 p-6">
@@ -130,7 +180,6 @@ export default function MutualFundPage() {
                                 </ResponsiveContainer>
                             </div>
 
-
                             <div className="bg-[#1f2937] rounded-lg border border-gray-700 p-6">
                                 <h2 className="text-xl font-semibold mb-4">Allocation Breakdown</h2>
                                 <table className="w-full text-left text-sm">
@@ -151,8 +200,9 @@ export default function MutualFundPage() {
                                 </table>
                             </div>
                         </div>
+
                         <RiskReturnChartToggle />
-                        <h2 className="text-2xl font-semibold mb-4">Fund Recommendations</h2>
+                        <h2 className="text-2xl font-semibold mb-4">Fund Recommendations By Certified Research Analyst </h2>
 
                         {allocationData.map((section, i) => (
                             <div key={i} className="mb-6">
@@ -180,4 +230,6 @@ export default function MutualFundPage() {
         </main>
     )
 }
+
+
 

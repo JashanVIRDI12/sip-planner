@@ -8,41 +8,46 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
     LabelList,
     RadarChart,
     Radar,
     PolarGrid,
     PolarAngleAxis,
-    PolarRadiusAxis,
 } from 'recharts'
 
+// ✅ Realistic Risk-Return Data
 export function getRiskReturnData(profile = 'Moderate') {
     const dataByProfile = {
         Conservative: {
             equity: { return: 8, risk: 3 },
+            hybrid: { return: 7, risk: 2 },
             debt: { return: 6, risk: 1 },
             gold: { return: 7, risk: 2 },
         },
         Moderate: {
             equity: { return: 12, risk: 6 },
+            hybrid: { return: 9, risk: 4 },
             debt: { return: 6, risk: 2 },
             gold: { return: 8, risk: 4 },
         },
         Aggressive: {
             equity: { return: 15, risk: 9 },
+            hybrid: { return: 10, risk: 5 },
             debt: { return: 5, risk: 3 },
             gold: { return: 10, risk: 5 },
         },
     }
 
-    const { equity, debt, gold } = dataByProfile[profile] || dataByProfile['Moderate']
+    const { equity, hybrid, debt, gold } = dataByProfile[profile] || dataByProfile['Moderate']
 
-    return [
+    const rawData = [
         { asset: 'Equity', return: equity.return, risk: equity.risk },
+        { asset: 'Hybrid', return: hybrid.return, risk: hybrid.risk },
         { asset: 'Debt', return: debt.return, risk: debt.risk },
         { asset: 'Gold', return: gold.return, risk: gold.risk },
     ]
+
+    return rawData.sort((a, b) => a.asset.localeCompare(b.asset))
 }
 
 export default function RiskReturnChartToggle() {
@@ -69,9 +74,18 @@ export default function RiskReturnChartToggle() {
                 </button>
             </div>
 
-            <ResponsiveContainer width="100%" height={300}>
-                {showRadar ? (
-                    <RadarChart outerRadius={120} data={riskReturnData} margin={{ top: 30, bottom: 30 }}>
+            {showRadar ? (
+                <div className="flex flex-col items-center">
+                    <RadarChart
+                        cx="50%"
+                        cy="50%"
+                        outerRadius="70%"
+                        width={400}
+                        height={350}
+                        data={riskReturnData}
+                        startAngle={45}
+                        endAngle={405}
+                    >
                         <PolarGrid stroke="#334155" />
                         <PolarAngleAxis dataKey="asset" stroke="#cbd5e1" />
                         <Radar
@@ -88,71 +102,94 @@ export default function RiskReturnChartToggle() {
                             fill="#f97316"
                             fillOpacity={0.6}
                         />
-
-                        <Legend />
                         <Tooltip
                             contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#fff' }}
                             itemStyle={{ color: '#fff' }}
                         />
                     </RadarChart>
-                ) : (
-                    <BarChart
-                        data={riskReturnData}
-                        margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-                        barCategoryGap="20%"
-                    >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                        <XAxis dataKey="asset" stroke="#cbd5e1" />
-                        <YAxis stroke="#cbd5e1" />
-                        <Tooltip
-                            contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#fff' }}
-                            itemStyle={{ color: '#fff' }}
-                        />
-                        <Legend
-                            wrapperStyle={{ color: '#cbd5e1' }}
-                            iconType="circle"
-                            iconSize={10}
-                        />
-                        <Bar
-                            dataKey="return"
-                            fill="url(#returnGradient)"
-                            radius={[4, 4, 0, 0]}
-                            name="Avg Return (%)"
-                            activeBar={{ fillOpacity: 1 }}
-                        >
-                            <LabelList dataKey="return" position="top" fill="#ffffff" />
-                        </Bar>
-                        <Bar
-                            dataKey="risk"
-                            fill="url(#riskGradient)"
-                            radius={[4, 4, 0, 0]}
-                            name="Risk Level"
-                            activeBar={{ fillOpacity: 1 }}
-                        >
-                            <LabelList dataKey="risk" position="top" fill="#ffffff" />
-                        </Bar>
 
-                        {/* Gradients */}
-                        <defs>
-                            <linearGradient id="returnGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.9} />
-                                <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.7} />
-                            </linearGradient>
-                            <linearGradient id="riskGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#f97316" stopOpacity={0.9} />
-                                <stop offset="95%" stopColor="#fb923c" stopOpacity={0.7} />
-                            </linearGradient>
-                        </defs>
-                    </BarChart>
-                )}
-            </ResponsiveContainer>
+                    {/* Custom Legend */}
+                    <div className="flex gap-6 text-sm mt-4">
+                        <div className="flex items-center gap-2 text-blue-400">
+                            <div className="w-3 h-3 bg-blue-400 rounded-full" />
+                            Avg Return (%)
+                        </div>
+                        <div className="flex items-center gap-2 text-orange-400">
+                            <div className="w-3 h-3 bg-orange-400 rounded-full" />
+                            Risk Level
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="flex flex-col items-center">
+                    <ResponsiveContainer width="100%" height={350}>
+                        <BarChart
+                            data={riskReturnData}
+                            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                            barCategoryGap="20%"
+                        >
+                            <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                            <XAxis dataKey="asset" stroke="#cbd5e1" />
+                            <YAxis stroke="#cbd5e1" />
+                            <Tooltip
+                                contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#fff' }}
+                                itemStyle={{ color: '#fff' }}
+                            />
+                            <Bar
+                                dataKey="return"
+                                fill="url(#returnGradient)"
+                                radius={[4, 4, 0, 0]}
+                                name="Avg Return (%)"
+                                activeBar={{ fillOpacity: 1 }}
+                            >
+                                <LabelList dataKey="return" position="top" fill="#ffffff" />
+                            </Bar>
+                            <Bar
+                                dataKey="risk"
+                                fill="url(#riskGradient)"
+                                radius={[4, 4, 0, 0]}
+                                name="Risk Level"
+                                activeBar={{ fillOpacity: 1 }}
+                            >
+                                <LabelList dataKey="risk" position="top" fill="#ffffff" />
+                            </Bar>
 
-            <p className="text-sm text-slate-300 mt-4 leading-relaxed">
-                <span className="font-semibold text-white">Equity</span> offers higher returns with more volatility,&nbsp;
-                <span className="font-semibold text-white">Debt</span> is stable with lower risk, and&nbsp;
-                <span className="font-semibold text-white">Gold</span> sits in between as a hedge.
+                            <defs>
+                                <linearGradient id="returnGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.9} />
+                                    <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.7} />
+                                </linearGradient>
+                                <linearGradient id="riskGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#f97316" stopOpacity={0.9} />
+                                    <stop offset="95%" stopColor="#fb923c" stopOpacity={0.7} />
+                                </linearGradient>
+                            </defs>
+                        </BarChart>
+                    </ResponsiveContainer>
+
+                    {/* Custom Legend */}
+                    <div className="flex gap-6 text-sm mt-4">
+                        <div className="flex items-center gap-2 text-blue-400">
+                            <div className="w-3 h-3 bg-blue-400 rounded-full" />
+                            Avg Return (%)
+                        </div>
+                        <div className="flex items-center gap-2 text-orange-400">
+                            <div className="w-3 h-3 bg-orange-400 rounded-full" />
+                            Risk Level
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <p className="text-sm text-slate-300 mt-6 leading-relaxed text-center">
+                <span className="font-semibold text-white">Equity</span> offers high returns but comes with higher risk,&nbsp;
+                <span className="font-semibold text-white">Hybrid</span> balances equity and debt for moderate risk-return,&nbsp;
+                <span className="font-semibold text-white">Debt</span> provides stability, and&nbsp;
+                <span className="font-semibold text-white">Gold</span> acts as an inflation hedge.
             </p>
         </div>
     )
 }
+
+
 

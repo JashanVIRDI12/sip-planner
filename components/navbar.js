@@ -13,13 +13,6 @@ export default function Navbar() {
     const [showDropdown, setShowDropdown] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
 
-    const navItems = [
-        { name: 'Home', href: '/' },
-        { name: 'SIP Calculator', href: '/sip-calculator' },
-        { name: 'Risk Profile', href: '/risk-profile' },
-        { name: 'Goal-Based', href: '/goal-based' },
-    ]
-
     useEffect(() => {
         const getSession = async () => {
             const { data: { session } } = await supabase.auth.getSession()
@@ -63,28 +56,6 @@ export default function Navbar() {
         router.push('/')
     }
 
-    const renderNavLinks = (isMobile = false) =>
-        navItems.map((item) => (
-            <li key={item.href} className="relative group">
-                <Link
-                    href={item.href}
-                    className={`block py-1 transition duration-300 ${
-                        pathname === item.href
-                            ? 'text-blue-500'
-                            : 'text-gray-300 hover:text-white'
-                    }`}
-                    onClick={() => isMobile && setMobileOpen(false)}
-                >
-                    {item.name}
-                    <span
-                        className={`block h-[2px] mt-1 bg-blue-500 transition-all ${
-                            pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
-                        }`}
-                    />
-                </Link>
-            </li>
-        ))
-
     return (
         <header className="sticky top-0 z-50 bg-gradient-to-br from-[#0f172a]/70 to-black/70 backdrop-blur-lg border-b border-gray-800 shadow-md">
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -96,8 +67,45 @@ export default function Navbar() {
                 </Link>
 
                 {/* Desktop Nav */}
-                <ul className="hidden md:flex space-x-6 text-sm font-medium">
-                    {renderNavLinks()}
+                <ul className="hidden md:flex space-x-6 text-sm font-medium items-center">
+                    <li>
+                        <Link href="/" className={`block py-1 ${pathname === '/' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
+                            Home
+                        </Link>
+                    </li>
+
+                    <li className="relative group">
+                        <span className="text-gray-300 hover:text-white py-1 flex items-center gap-1 cursor-pointer">
+                            Calculators
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" />
+                            </svg>
+                        </span>
+                        <ul className="absolute z-40 top-full mt-2 w-56 bg-zinc-900 border border-zinc-700 rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-300 invisible group-hover:visible">
+                            <li>
+                                <Link href="/sip-calculator" className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-800">
+                                    Regular SIP Calculator
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/goal-based" className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-800">
+                                    Goal-Based SIP Calculator
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <Link href="/risk-profile" className={`block py-1 ${pathname === '/risk-profile' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
+                            Risk Profile
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link href="/mutual-funds" className={`block py-1 ${pathname === '/mutual-funds' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
+                            Mutual Funds
+                        </Link>
+                    </li>
                 </ul>
 
                 {/* Right Side */}
@@ -105,9 +113,9 @@ export default function Navbar() {
                     {!user ? (
                         <button
                             onClick={() => router.push('/sign-in?redirectTo=' + pathname)}
-                            className="relative inline-flex items-center justify-center overflow-hidden text-sm font-medium rounded-lg px-5 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 ease-in-out hover:scale-105"
+                            className="inline-flex items-center text-sm font-medium rounded-lg px-5 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg hover:shadow-blue-500/40 transition-all duration-300"
                         >
-                            <span className="relative z-10">Sign In</span>
+                            Sign In
                         </button>
                     ) : (
                         <div className="relative">
@@ -151,14 +159,78 @@ export default function Navbar() {
             {/* Mobile Menu */}
             {mobileOpen && (
                 <div className="md:hidden bg-[#0f172a] px-6 py-4 border-t border-zinc-800 space-y-4">
-                    <ul className="space-y-3 text-sm">{renderNavLinks(true)}</ul>
+                    <ul className="space-y-3 text-sm font-medium text-white">
+                        <li>
+                            <Link
+                                href="/"
+                                onClick={() => setMobileOpen(false)}
+                                className="block px-4 py-2 rounded-lg hover:bg-blue-800/30 transition"
+                            >
+                                Home
+                            </Link>
+                        </li>
+
+                        <details className="group rounded-lg overflow-hidden">
+                            <summary className="flex items-center justify-between px-4 py-2 rounded-lg text-white cursor-pointer hover:bg-blue-800/30 transition appearance-none [&::-webkit-details-marker]:hidden">
+                                <span>Calculators</span>
+                                <svg
+                                    className="w-4 h-4 group-open:rotate-180 transform transition-transform duration-300"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+                                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" />
+                                </svg>
+                            </summary>
+                            <ul className="mt-2 ml-2 space-y-1">
+                                <li>
+                                    <Link
+                                        href="/sip-calculator"
+                                        onClick={() => setMobileOpen(false)}
+                                        className="block px-4 py-2 text-sm text-blue-200 hover:bg-blue-700/40 transition rounded-md"
+                                    >
+                                        Regular SIP Calculator
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="/goal-based"
+                                        onClick={() => setMobileOpen(false)}
+                                        className="block px-4 py-2 text-sm text-blue-200 hover:bg-blue-700/40 transition rounded-md"
+                                    >
+                                        Goal-Based SIP Calculator
+                                    </Link>
+                                </li>
+                            </ul>
+                        </details>
+
+                        <li>
+                            <Link
+                                href="/risk-profile"
+                                onClick={() => setMobileOpen(false)}
+                                className="block px-4 py-2 rounded-lg hover:bg-blue-800/30 transition"
+                            >
+                                Risk Profile
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link
+                                href="/mutual-funds"
+                                onClick={() => setMobileOpen(false)}
+                                className="block px-4 py-2 rounded-lg hover:bg-blue-800/30 transition"
+                            >
+                                Mutual Funds
+                            </Link>
+                        </li>
+                    </ul>
+
                     {!user ? (
                         <button
                             onClick={() => {
                                 setMobileOpen(false)
                                 router.push('/sign-in?redirectTo=' + pathname)
                             }}
-                            className="w-full text-sm font-semibold px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white rounded-lg transition"
+                            className="w-full text-sm font-semibold px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg transition"
                         >
                             Sign In
                         </button>
@@ -182,6 +254,9 @@ export default function Navbar() {
         </header>
     )
 }
+
+
+
 
 
 

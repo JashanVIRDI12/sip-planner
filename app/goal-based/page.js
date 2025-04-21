@@ -139,24 +139,28 @@ export default function GoalBasedSIP() {
                             </LineChart>
                         </ResponsiveContainer>
 
+                        {/* 🧊 Modern Table */}
                         <div className="mt-6 w-full overflow-x-auto">
                             <div className="min-w-[500px]">
-                                <table className="min-w-full text-sm text-left text-gray-300">
-                                    <thead className="bg-gradient-to-r from-blue-900 to-blue-700 text-blue-200">
+                                <table className="w-full text-sm text-left text-gray-300 backdrop-blur-sm rounded-xl overflow-hidden border border-blue-700/30 shadow-xl">
+                                    <thead className="bg-gradient-to-r from-blue-800 to-blue-700 text-blue-100 text-sm">
                                     <tr>
-                                        <th className="px-4 py-3">Year</th>
-                                        <th className="px-4 py-3">Invested</th>
-                                        <th className="px-4 py-3">Future Value</th>
-                                        <th className="px-4 py-3">Gains</th>
+                                        <th className="px-5 py-3">Year</th>
+                                        <th className="px-5 py-3">Invested</th>
+                                        <th className="px-5 py-3">Future Value</th>
+                                        <th className="px-5 py-3">Gains</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {result.chartData.map((row) => (
-                                        <tr key={row.year} className="odd:bg-gray-900 even:bg-gray-800 border-b border-gray-700 hover:bg-blue-950/30 transition duration-200">
-                                            <td className="px-4 py-3">{row.year}</td>
-                                            <td className="px-4 py-3">₹{row.invested.toLocaleString('en-IN')}</td>
-                                            <td className="px-4 py-3">₹{row.value.toLocaleString('en-IN')}</td>
-                                            <td className="px-4 py-3 text-green-400">₹{row.gains.toLocaleString('en-IN')}</td>
+                                    {result.chartData.map((row, index) => (
+                                        <tr
+                                            key={row.year}
+                                            className={`transition-all duration-300 hover:scale-[1.015] hover:shadow-md ${index % 2 === 0 ? 'bg-[#0f172a]/80' : 'bg-[#1e293b]/80'}`}
+                                        >
+                                            <td className="px-5 py-4 font-semibold text-blue-400">{row.year}</td>
+                                            <td className="px-5 py-4 text-gray-200">₹{row.invested.toLocaleString('en-IN')}</td>
+                                            <td className="px-5 py-4 text-cyan-300">₹{row.value.toLocaleString('en-IN')}</td>
+                                            <td className="px-5 py-4 text-green-400 font-medium">₹{row.gains.toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                     </tbody>
@@ -184,6 +188,7 @@ function InputField({ label, value, onChange }) {
         </div>
     )
 }
+
 
 
 

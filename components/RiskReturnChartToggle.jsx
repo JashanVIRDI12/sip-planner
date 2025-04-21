@@ -40,6 +40,7 @@ export function getRiskReturnData(profile = 'Moderate') {
 
     const { equity, hybrid, debt, gold } = dataByProfile[profile] || dataByProfile['Moderate']
 
+    // ✅ Keep order: Equity > Hybrid > Debt > Gold
     const rawData = [
         { asset: 'Equity', return: equity.return, risk: equity.risk },
         { asset: 'Hybrid', return: hybrid.return, risk: hybrid.risk },
@@ -47,7 +48,7 @@ export function getRiskReturnData(profile = 'Moderate') {
         { asset: 'Gold', return: gold.return, risk: gold.risk },
     ]
 
-    return rawData.sort((a, b) => a.asset.localeCompare(b.asset))
+    return rawData
 }
 
 export default function RiskReturnChartToggle() {
@@ -84,7 +85,7 @@ export default function RiskReturnChartToggle() {
                         height={350}
                         data={riskReturnData}
                         startAngle={45}
-                        endAngle={405}
+                        endAngle={-315}
                     >
                         <PolarGrid stroke="#334155" />
                         <PolarAngleAxis dataKey="asset" stroke="#cbd5e1" />
@@ -103,7 +104,11 @@ export default function RiskReturnChartToggle() {
                             fillOpacity={0.6}
                         />
                         <Tooltip
-                            contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#fff' }}
+                            contentStyle={{
+                                backgroundColor: '#1e293b',
+                                borderColor: '#334155',
+                                color: '#fff',
+                            }}
                             itemStyle={{ color: '#fff' }}
                         />
                     </RadarChart>
@@ -132,7 +137,11 @@ export default function RiskReturnChartToggle() {
                             <XAxis dataKey="asset" stroke="#cbd5e1" />
                             <YAxis stroke="#cbd5e1" />
                             <Tooltip
-                                contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#fff' }}
+                                contentStyle={{
+                                    backgroundColor: '#1e293b',
+                                    borderColor: '#334155',
+                                    color: '#fff',
+                                }}
                                 itemStyle={{ color: '#fff' }}
                             />
                             <Bar
@@ -190,6 +199,7 @@ export default function RiskReturnChartToggle() {
         </div>
     )
 }
+
 
 
 

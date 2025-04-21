@@ -14,9 +14,8 @@ export async function POST(req) {
             }),
         });
 
-        const raw = await response.text();
+        const data = await response.json();
 
-        const data = JSON.parse(raw);
 
         return Response.json({
             result: data.choices?.[0]?.message?.content || "No response from AI",

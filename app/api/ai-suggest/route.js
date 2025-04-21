@@ -9,7 +9,7 @@ export async function POST(req) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                model: "google/gemini-2.0-flash-exp:free",
+                model: "deepseek/deepseek-chat-v3-0324:free",
                 messages,
             }),
         });

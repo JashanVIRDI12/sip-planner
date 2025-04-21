@@ -1,12 +1,11 @@
 'use client'
-import React, {useState} from 'react'
-import {Sparkles, Info, PlayCircle, BookOpenCheck, Rocket} from 'lucide-react'
-import Link from 'next/link'
-import {motion, AnimatePresence} from 'framer-motion'
+import React, { useState } from 'react'
+import { Sparkles, Info, PlayCircle, BookOpenCheck, Rocket } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { initialChapters } from './chapters'
 
 export default function SIPCrashCourse() {
-    const [chapters, setChapters] = useState(initialChapters.map(ch => ({...ch, isExpanded: false})))
+    const [chapters, setChapters] = useState(initialChapters.map(ch => ({ ...ch, isExpanded: false })))
     const [progress, setProgress] = useState(0)
     const [activeChapter, setActiveChapter] = useState(null)
 
@@ -20,22 +19,21 @@ export default function SIPCrashCourse() {
             updated[activeChapter].isExpanded = true
             const viewed = updated.filter(ch => ch.isExpanded).length
             const total = updated.length
-            setProgress(Math.round((viewed / total) * 100))
+            const newProgress = Math.round((viewed / total) * 100)
+            setProgress(newProgress)
         }
         setChapters(updated)
         setActiveChapter(null)
     }
 
     return (
-        <main
-            className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12 overflow-hidden">
+        <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12 overflow-hidden">
             <div className="max-w-4xl mx-auto">
                 <h1 className="text-5xl font-bold mb-6 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent animate-gradient-x">
                     SIP Crash Course
                 </h1>
                 <p className="text-gray-300 text-center mb-8 text-lg max-w-2xl mx-auto">
-                    Whether you're just getting started or want to invest smarter, this professional guide breaks down
-                    SIPs clearly so you can make confident financial decisions.
+                    {"Whether you're just getting started or want to invest smarter, this professional guide breaks down SIPs clearly so you can make confident financial decisions."}
                 </p>
 
                 {/* Progress Tracker */}
@@ -46,9 +44,9 @@ export default function SIPCrashCourse() {
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                         <motion.div
-                            initial={{width: 0}}
-                            animate={{width: `${progress}%`}}
-                            transition={{duration: 0.5}}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.5 }}
                             className="h-2 bg-cyan-400 rounded-full"
                         ></motion.div>
                     </div>
@@ -58,9 +56,9 @@ export default function SIPCrashCourse() {
                     {chapters.map((ch, i) => (
                         <motion.div
                             key={i}
-                            initial={{opacity: 0, y: 20}}
-                            animate={{opacity: 1, y: 0}}
-                            transition={{duration: 0.3, delay: i * 0.1}}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: i * 0.1 }}
                             className="bg-[#1f2937] border border-gray-700 rounded-2xl p-4 shadow-md flex items-center justify-between hover:shadow-purple-500/10 transition duration-300"
                         >
                             <div className="flex items-center space-x-3">
@@ -80,16 +78,16 @@ export default function SIPCrashCourse() {
                 <AnimatePresence>
                     {activeChapter !== null && (
                         <motion.div
-                            initial={{opacity: 0}}
-                            animate={{opacity: 1}}
-                            exit={{opacity: 0}}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
                             className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-50 flex items-center justify-center"
                         >
                             <motion.div
-                                initial={{y: 50, opacity: 0}}
-                                animate={{y: 0, opacity: 1}}
-                                exit={{y: 50, opacity: 0}}
-                                transition={{duration: 0.3}}
+                                initial={{ y: 50, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 50, opacity: 0 }}
+                                transition={{ duration: 0.3 }}
                                 className="bg-[#1f2937] rounded-xl max-w-2xl w-full mx-4 p-6 text-white shadow-2xl"
                             >
                                 <h2 className="text-2xl font-semibold mb-4 flex items-center">

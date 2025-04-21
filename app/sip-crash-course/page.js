@@ -19,26 +19,25 @@ export default function SIPCrashCourse() {
             updated[activeChapter].isExpanded = true
             const viewed = updated.filter(ch => ch.isExpanded).length
             const total = updated.length
-            const newProgress = Math.round((viewed / total) * 100)
-            setProgress(newProgress)
+            setProgress(Math.round((viewed / total) * 100))
         }
         setChapters(updated)
         setActiveChapter(null)
     }
 
     return (
-        <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12 overflow-hidden">
+        <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12 sm:px-6 lg:px-8 overflow-hidden">
             <div className="max-w-4xl mx-auto">
-                <h1 className="text-5xl font-bold mb-6 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent animate-gradient-x">
+                <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
                     SIP Mastery
                 </h1>
-                <p className="text-gray-300 text-center mb-8 text-lg max-w-2xl mx-auto">
+                <p className="text-gray-300 text-center mb-8 text-base sm:text-lg max-w-2xl mx-auto">
                     {"Whether you're just getting started or want to invest smarter, this professional guide breaks down SIPs clearly so you can make confident financial decisions."}
                 </p>
 
                 {/* Progress Tracker */}
                 <div className="mb-10">
-                    <div className="flex justify-between items-center mb-2 text-sm text-gray-400">
+                    <div className="flex justify-between items-center mb-2 text-xs sm:text-sm text-gray-400">
                         <span>Progress: {progress}%</span>
                         <span>{chapters.filter(ch => ch.isExpanded).length} / {chapters.length} Chapters Completed</span>
                     </div>
@@ -59,15 +58,15 @@ export default function SIPCrashCourse() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: i * 0.1 }}
-                            className="bg-[#1f2937] border border-gray-700 rounded-2xl p-4 shadow-md flex items-center justify-between hover:shadow-purple-500/10 transition duration-300"
+                            className="bg-[#1f2937] border border-gray-700 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between shadow-md hover:shadow-purple-500/10 transition duration-300"
                         >
-                            <div className="flex items-center space-x-3">
+                            <div className="flex items-center mb-2 sm:mb-0 space-x-3">
                                 {ch.icon}
-                                <h2 className="text-lg font-medium text-white">{ch.title}</h2>
+                                <h2 className="text-base sm:text-lg font-medium">{ch.title}</h2>
                             </div>
                             <button
                                 onClick={() => handleStartLearning(i)}
-                                className="text-sm text-cyan-400 hover:underline"
+                                className="text-sm text-cyan-400 hover:underline w-fit"
                             >
                                 {ch.isExpanded ? '✓ Done' : 'Start Learning'}
                             </button>
@@ -75,22 +74,23 @@ export default function SIPCrashCourse() {
                     ))}
                 </div>
 
+                {/* Modal */}
                 <AnimatePresence>
                     {activeChapter !== null && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-50 flex items-center justify-center"
+                            className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
                         >
                             <motion.div
                                 initial={{ y: 50, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 exit={{ y: 50, opacity: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="bg-[#1f2937] rounded-xl max-w-2xl w-full mx-4 p-6 text-white shadow-2xl"
+                                className="bg-[#1f2937] rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 text-white shadow-2xl"
                             >
-                                <h2 className="text-2xl font-semibold mb-4 flex items-center">
+                                <h2 className="text-xl sm:text-2xl font-semibold mb-4 flex items-center">
                                     {chapters[activeChapter].icon} {chapters[activeChapter].title}
                                 </h2>
                                 <p className="whitespace-pre-line text-gray-300 text-base leading-relaxed mb-6">
@@ -112,3 +112,4 @@ export default function SIPCrashCourse() {
         </main>
     )
 }
+

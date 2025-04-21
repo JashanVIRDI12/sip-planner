@@ -11,6 +11,7 @@ import {
 import ReactMarkdown from 'react-markdown'
 import RiskReturnChartToggle from "@/components/RiskReturnChartToggle"
 import { fetchAIResponse } from "../utils/openRouterClient"
+import { AlertCircle } from 'lucide-react'
 
 const allocations = {
     Conservative: [
@@ -132,17 +133,19 @@ Use a helpful, concise, and confident tone, as if you're guiding a new investor.
     }, [profile])
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12">
+        <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 pt-12 pb-2">
             <div className="max-w-5xl mx-auto">
-                <h1 className="text-3xl font-bold text-center mb-6">SIP Asset Allocation</h1>
+                <h1 className="text-5xl font-bold text-center mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-600 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x">
+                    SIP Asset Allocation
+                </h1>
 
                 {profile ? (
                     <>
-                        <p className="text-center text-lg mb-4">
+                        <p className="text-center text-lg mb-8">
                             Based on your <span className="text-blue-400 font-semibold">{profile}</span> risk profile
                         </p>
 
-                        <div className="bg-[#1f2937] border border-purple-600 text-purple-300 rounded-lg p-4 mb-6 text-sm leading-relaxed">
+                        <div className="bg-[#1f2937] border border-purple-600 text-purple-300 rounded-lg p-4 mb-8 text-sm leading-relaxed">
                             <h3 className="font-semibold text-purple-400 mb-2">💡 AI Suggestion</h3>
                             {isLoading ? (
                                 <div className="animate-pulse space-y-2">
@@ -216,14 +219,17 @@ Use a helpful, concise, and confident tone, as if you're guiding a new investor.
                         ))}
                     </>
                 ) : (
-                    <div className="text-center mt-10 text-gray-400">
-                        <p>
-                            No risk profile found. Please{' '}
-                            <a href="/risk-profile" className="text-blue-400 underline">
-                                take the quiz
-                            </a>{' '}
-                            first.
+                    <div className="mt-12 flex flex-col items-center justify-center text-center animate-fade-in-up">
+                        <AlertCircle className="w-12 h-12 text-red-500 mb-4 animate-pulse" />
+                        <p className="text-lg text-gray-400">
+                            Looks like you haven&apos;t set your risk profile yet.
                         </p>
+                        <a
+                            href="/risk-profile"
+                            className="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 hover:scale-105 shadow-md"
+                        >
+                            Take the Risk Profile Quiz
+                        </a>
                     </div>
                 )}
             </div>

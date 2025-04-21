@@ -20,6 +20,8 @@ module.exports = {
       animation: {
         'fade-in-fast': 'fadeIn 0.3s ease-out',
         shimmer: 'shimmer 4s linear infinite',
+        'fade-in-up': 'fadeInUp 0.6s ease-out',
+        'gradient-x': 'gradientX 5s ease infinite',
       },
       keyframes: {
         fadeIn: {
@@ -29,6 +31,20 @@ module.exports = {
         shimmer: {
           '0%': { backgroundPosition: '0% 50%' },
           '100%': { backgroundPosition: '200% 50%' },
+        },
+        fadeInUp: {
+          '0%': {
+            opacity: 0,
+            transform: 'translateY(20px)',
+          },
+          '100%': {
+            opacity: 1,
+            transform: 'translateY(0)',
+          },
+        },
+        gradientX: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
         },
       },
     },

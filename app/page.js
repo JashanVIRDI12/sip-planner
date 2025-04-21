@@ -32,8 +32,8 @@ export default function HomePage() {
     }, [])
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-[#0a0f1a] via-[#060a13] to-black text-white relative overflow-hidden">
-            <ParticleBackground />
+        <main className="min-h-screen bg-gradient-to-br from-[#02040a] via-[#010207] to-black text-white relative overflow-hidden">
+        <ParticleBackground />
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-800/10 via-blue-900/5 to-transparent pointer-events-none" />
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-28 md:space-y-36">
                 <HeroSection />
@@ -125,34 +125,43 @@ function FeaturesSection() {
 
 function CTASection() {
     return (
-        <div className="relative py-16 bg-gradient-to-br from-blue-900/30 to-black rounded-3xl text-center overflow-hidden shadow-xl px-4 sm:px-6">
-            <div className="absolute top-0 left-0 w-full h-12 bg-gradient-to-b from-[#0a0f1a] to-transparent rounded-t-3xl" />
-            <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
-            >
-                Ready to Take Control of Your Finances?
-            </motion.h2>
-            <p className="text-gray-400 mt-3 max-w-xl mx-auto text-sm sm:text-base">
-                Whether you&rsquo;re just starting or optimizing your portfolio, our tools are built to make your investment journey smarter and smoother.
-            </p>
+        <div className="relative py-16 px-4 sm:px-6 mt-20">
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 }}
-                className="mt-8"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                className="relative z-10 max-w-4xl mx-auto backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-10 text-center shadow-[0_0_30px_rgba(0,255,255,0.1)] overflow-hidden"
             >
-                <Link href="/risk-profile">
-                    <button className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-700 rounded-xl font-semibold text-white transition shadow-lg">
-                        Take the Quiz
-                    </button>
-                </Link>
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-600/5 to-transparent rounded-3xl pointer-events-none" />
+                <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 bg-[length:300%_300%] animate-gradient-x">
+                Ready to Take Control of Your Finances?
+                </h2>
+                <p className="text-gray-300 mt-4 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+                    Whether you&apos;re just starting or optimizing your portfolio, our tools are built
+                    to make your investment journey smarter and smoother.
+                </p>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="mt-8"
+                >
+                    <Link href="/risk-profile">
+                        <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-300 rounded-xl font-semibold text-white transition shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40">
+                            Take the Quiz
+                        </button>
+                    </Link>
+                </motion.div>
             </motion.div>
+
+            {/* Subtle animated glow background */}
+            <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
+                <div className="w-[500px] h-[500px] bg-cyan-400/10 rounded-full blur-3xl animate-pulse-slow" />
+            </div>
         </div>
-    )
+    );
 }
+
 
 
 

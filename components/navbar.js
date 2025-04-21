@@ -1,9 +1,9 @@
 'use client'
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
-import { Menu, X } from 'lucide-react'
+import {usePathname, useRouter} from 'next/navigation'
+import {supabase} from '@/lib/supabaseClient'
+import {Menu, X} from 'lucide-react'
 
 export default function Navbar() {
     const pathname = usePathname()
@@ -15,11 +15,11 @@ export default function Navbar() {
 
     useEffect(() => {
         const getSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
+            const {data: {session}} = await supabase.auth.getSession()
             if (session?.user) {
                 setUser(session.user)
                 const risk = localStorage.getItem('riskProfile')
-                setProfile({ email: session.user.email, riskProfile: risk || 'Not set' })
+                setProfile({email: session.user.email, riskProfile: risk || 'Not set'})
             } else {
                 setUser(null)
                 setProfile(null)
@@ -28,11 +28,11 @@ export default function Navbar() {
 
         getSession()
 
-        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+        const {data: listener} = supabase.auth.onAuthStateChange((_event, session) => {
             if (session?.user) {
                 setUser(session.user)
                 const risk = localStorage.getItem('riskProfile')
-                setProfile({ email: session.user.email, riskProfile: risk || 'Not set' })
+                setProfile({email: session.user.email, riskProfile: risk || 'Not set'})
             } else {
                 setUser(null)
                 setProfile(null)
@@ -57,7 +57,8 @@ export default function Navbar() {
     }
 
     return (
-        <header className="sticky top-0 z-50 bg-gradient-to-br from-[#0f172a]/70 to-black/70 backdrop-blur-lg border-b border-gray-800 shadow-md">
+        <header
+            className="sticky top-0 z-50 bg-gradient-to-br from-[#0f172a]/70 to-black/70 backdrop-blur-lg border-b border-gray-800 shadow-md">
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <Link
                     href="/"
@@ -69,7 +70,8 @@ export default function Navbar() {
                 {/* Desktop Nav */}
                 <ul className="hidden md:flex space-x-6 text-sm font-medium items-center">
                     <li>
-                        <Link href="/" className={`block py-1 ${pathname === '/' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
+                        <Link href="/"
+                              className={`block py-1 ${pathname === '/' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
                             Home
                         </Link>
                     </li>
@@ -78,17 +80,19 @@ export default function Navbar() {
                         <span className="text-gray-300 hover:text-white py-1 flex items-center gap-1 cursor-pointer">
                             Calculators
                             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" />
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2"/>
                             </svg>
                         </span>
                         <ul className="absolute z-40 top-full mt-2 w-56 bg-zinc-900 border border-zinc-700 rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-300 invisible group-hover:visible">
                             <li>
-                                <Link href="/sip-calculator" className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-800">
+                                <Link href="/sip-calculator"
+                                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-800">
                                     Regular SIP Calculator
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/goal-based" className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-800">
+                                <Link href="/goal-based"
+                                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-800">
                                     Goal-Based SIP Calculator
                                 </Link>
                             </li>
@@ -96,16 +100,25 @@ export default function Navbar() {
                     </li>
 
                     <li>
-                        <Link href="/risk-profile" className={`block py-1 ${pathname === '/risk-profile' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
+                        <Link href="/risk-profile"
+                              className={`block py-1 ${pathname === '/risk-profile' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
                             Risk Profile
                         </Link>
                     </li>
 
                     <li>
-                        <Link href="/mutual-funds" className={`block py-1 ${pathname === '/mutual-funds' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
+                        <Link href="/mutual-funds"
+                              className={`block py-1 ${pathname === '/mutual-funds' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
                             Mutual Funds
                         </Link>
                     </li>
+                    <li>
+                        <Link href="/sip-crash-course"
+                              className={`block py-1 ${pathname === '/sip-crash-course' ? 'text-blue-500' : 'text-gray-300 hover:text-white'}`}>
+                            SIP Mastery
+                        </Link>
+                    </li>
+
                 </ul>
 
                 {/* Right Side */}
@@ -125,15 +138,17 @@ export default function Navbar() {
                             >
                                 {profile?.email.split('@')[0]}
                                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" />
+                                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2"/>
                                 </svg>
                             </button>
 
                             {showDropdown && (
-                                <div className="absolute right-0 mt-3 w-60 bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl z-50 p-4 space-y-3">
+                                <div
+                                    className="absolute right-0 mt-3 w-60 bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl z-50 p-4 space-y-3">
                                     <div className="text-sm text-gray-300 leading-5">
                                         <p><span className="text-gray-500">Email:</span> {profile?.email}</p>
-                                        <p><span className="text-gray-500">Risk Profile:</span> <span className="text-blue-400">{profile?.riskProfile}</span></p>
+                                        <p><span className="text-gray-500">Risk Profile:</span> <span
+                                            className="text-blue-400">{profile?.riskProfile}</span></p>
                                     </div>
                                     <button
                                         onClick={handleSignOut}
@@ -152,7 +167,7 @@ export default function Navbar() {
                     className="md:hidden text-gray-300"
                     onClick={() => setMobileOpen(!mobileOpen)}
                 >
-                    {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    {mobileOpen ? <X className="w-6 h-6"/> : <Menu className="w-6 h-6"/>}
                 </button>
             </nav>
 
@@ -171,14 +186,15 @@ export default function Navbar() {
                         </li>
 
                         <details className="group rounded-lg overflow-hidden">
-                            <summary className="flex items-center justify-between px-4 py-2 rounded-lg text-white cursor-pointer hover:bg-blue-800/30 transition appearance-none [&::-webkit-details-marker]:hidden">
+                            <summary
+                                className="flex items-center justify-between px-4 py-2 rounded-lg text-white cursor-pointer hover:bg-blue-800/30 transition appearance-none [&::-webkit-details-marker]:hidden">
                                 <span>Calculators</span>
                                 <svg
                                     className="w-4 h-4 group-open:rotate-180 transform transition-transform duration-300"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                 >
-                                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" />
+                                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2"/>
                                 </svg>
                             </summary>
                             <ul className="mt-2 ml-2 space-y-1">
@@ -222,6 +238,15 @@ export default function Navbar() {
                                 Mutual Funds
                             </Link>
                         </li>
+                        <li>
+                            <Link
+                                href="/sip-crash-course"
+                                onClick={() => setMobileOpen(false)}
+                                className="block px-4 py-2 rounded-lg hover:bg-blue-800/30 transition"
+                            >
+                                SIP Mastery
+                            </Link>
+                        </li>
                     </ul>
 
                     {!user ? (
@@ -237,7 +262,8 @@ export default function Navbar() {
                     ) : (
                         <div className="text-sm text-gray-300 space-y-2">
                             <p><span className="text-gray-400">Email:</span> {profile?.email}</p>
-                            <p><span className="text-gray-400">Risk Profile:</span> <span className="text-blue-400 font-medium">{profile?.riskProfile}</span></p>
+                            <p><span className="text-gray-400">Risk Profile:</span> <span
+                                className="text-blue-400 font-medium">{profile?.riskProfile}</span></p>
                             <button
                                 onClick={() => {
                                     setMobileOpen(false)

@@ -22,7 +22,7 @@ const ParticleLayer = ({ zIndex, particleSize, speed, opacity, count }) => {
             }}
             options={{
                 fullScreen: { enable: false },
-                background: { color: '#0f172a' },
+                background: { color: '#020617' },
                 fpsLimit: 60,
                 detectRetina: true,
                 interactivity: {
@@ -33,14 +33,14 @@ const ParticleLayer = ({ zIndex, particleSize, speed, opacity, count }) => {
                     },
                     modes: {
                         slow: {
-                            factor: 0.5,
-                            radius: 120,
+                            factor: 0.4,
+                            radius: 100,
                         },
                     },
                 },
                 particles: {
                     number: { value: count, density: { enable: true, area: 1000 } },
-                    color: { value: '#38bdf8' },
+                    color: { value: '#0ea5e9' }, // darker cyan
                     shape: { type: 'circle' },
                     size: { value: particleSize },
                     opacity: { value: opacity },
@@ -61,24 +61,25 @@ const ParticleLayer = ({ zIndex, particleSize, speed, opacity, count }) => {
 const ParticleBackground = () => {
     return (
         <>
-            {/* Background layer - small, slow, faint */}
+            {/* Background layer - very faint and slow */}
             <ParticleLayer
                 zIndex={0}
                 particleSize={1}
                 speed={0.2}
-                opacity={0.1}
+                opacity={0.05}
                 count={40}
             />
-            {/* Foreground layer - bigger, faster, more vivid */}
+            {/* Foreground layer - medium subtle animation */}
             <ParticleLayer
                 zIndex={1}
                 particleSize={2}
-                speed={0.6}
-                opacity={0.3}
-                count={30}
+                speed={0.5}
+                opacity={0.2}
+                count={25}
             />
         </>
     );
 };
 
 export default ParticleBackground;
+

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef, useLayoutEffect} from 'react'
 import { useForm } from 'react-hook-form'
 import CountUp from 'react-countup'
 import { useRouter } from 'next/navigation'
@@ -67,6 +67,19 @@ function SummaryTile({ label, value, color }) {
 }
 
 function ChartAndTable({ data }) {
+    const [showAll, setShowAll] = useState(false)
+    const contentRef = useRef(null)
+    const containerRef = useRef(null)
+
+    useLayoutEffect(() => {
+        if (contentRef.current && containerRef.current) {
+            const contentHeight = contentRef.current.scrollHeight
+            containerRef.current.style.maxHeight = showAll
+                ? `${contentHeight}px`
+                : `300px` // height for 5 rows approx.
+        }
+    }, [showAll, data])
+
     if (!Array.isArray(data) || data.length === 0) return null
 
     return (
@@ -93,7 +106,6 @@ function ChartAndTable({ data }) {
                 </ResponsiveContainer>
             </div>
 
-            {/* 💎 Sleek Table */}
             <div className="mt-6 w-full overflow-x-auto">
                 <div className="min-w-[500px]">
                     <table className="w-full text-sm text-left text-gray-300 backdrop-blur-sm rounded-xl overflow-hidden border border-blue-700/30 shadow-xl">
@@ -106,20 +118,49 @@ function ChartAndTable({ data }) {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map((row, index) => (
-                            <tr
-                                key={row.year}
-                                className={`transition-all duration-300 hover:scale-[1.015] hover:shadow-md ${index % 2 === 0 ? 'bg-[#0f172a]/80' : 'bg-[#1e293b]/80'}`}
-                            >
-                                <td className="px-5 py-4 font-semibold text-blue-400">{row.year}</td>
-                                <td className="px-5 py-4 text-gray-200">₹{row.initial.toLocaleString('en-IN')}</td>
-                                <td className="px-5 py-4 text-cyan-300">₹{row.value.toLocaleString('en-IN')}</td>
-                                <td className="px-5 py-4 text-green-400 font-medium">₹{row.gains.toLocaleString('en-IN')}</td>
-                            </tr>
-                        ))}
+                        <tr>
+                            <td colSpan={4} className="p-0">
+                                <div
+                                    ref={containerRef}
+                                    style={{
+                                        overflow: 'hidden',
+                                        transition: 'max-height 0.6s ease-in-out',
+                                    }}
+                                >
+                                    <div ref={contentRef}>
+                                        {data.map((row, index) => {
+                                            return (
+                                                <div
+                                                    key={row.year}
+                                                    className={`grid grid-cols-4 px-5 py-4 border-t border-gray-700 transition-all duration-300 hover:scale-[1.015] hover:shadow-md ${
+                                                        index % 2 === 0 ? 'bg-[#0f172a]/80' : 'bg-[#1e293b]/80'
+                                                    }`}
+                                                >
+                                                    <div className="text-blue-400 font-semibold">{row.year}</div>
+                                                    <div className="text-gray-200">₹{row.initial.toLocaleString('en-IN')}</div>
+                                                    <div className="text-cyan-300">₹{row.value.toLocaleString('en-IN')}</div>
+                                                    <div className="text-green-400 font-medium">₹{row.gains.toLocaleString('en-IN')}</div>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
+
+                {data.length > 5 && (
+                    <div className="mt-4 text-center">
+                        <button
+                            onClick={() => setShowAll(!showAll)}
+                            className="text-sm text-blue-400 hover:text-blue-300 transition"
+                        >
+                            {showAll ? 'Show Less ▲' : 'Show More ▼'}
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     )

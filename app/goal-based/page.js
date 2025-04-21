@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import {
     LineChart,
     Line,
@@ -55,11 +55,37 @@ function calculateRequiredSIP(goal, rate, years) {
     }
 }
 
+function InputField({ label, value, onChange }) {
+    return (
+        <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">{label}</label>
+            <input
+                type="tel"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="Enter value..."
+                className="w-full bg-[#111827] text-white rounded-lg border border-gray-600 px-3 py-2 text-sm outline-none ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-blue-500"
+            />
+        </div>
+    )
+}
+
 export default function GoalBasedSIP() {
     const [target, setTarget] = useState('')
     const [rate, setRate] = useState('')
     const [years, setYears] = useState('')
     const [result, setResult] = useState(null)
+    const [showAll, setShowAll] = useState(false)
+
+    const contentRef = useRef(null)
+    const containerRef = useRef(null)
+
+    useLayoutEffect(() => {
+        if (contentRef.current && containerRef.current) {
+            const contentHeight = contentRef.current.scrollHeight
+            containerRef.current.style.maxHeight = showAll ? `${contentHeight}px` : `300px`
+        }
+    }, [showAll, result])
 
     useEffect(() => {
         document.documentElement.classList.add('dark')
@@ -139,7 +165,6 @@ export default function GoalBasedSIP() {
                             </LineChart>
                         </ResponsiveContainer>
 
-                        {/* 🧊 Modern Table */}
                         <div className="mt-6 w-full overflow-x-auto">
                             <div className="min-w-[500px]">
                                 <table className="w-full text-sm text-left text-gray-300 backdrop-blur-sm rounded-xl overflow-hidden border border-blue-700/30 shadow-xl">
@@ -152,21 +177,48 @@ export default function GoalBasedSIP() {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {result.chartData.map((row, index) => (
-                                        <tr
-                                            key={row.year}
-                                            className={`transition-all duration-300 hover:scale-[1.015] hover:shadow-md ${index % 2 === 0 ? 'bg-[#0f172a]/80' : 'bg-[#1e293b]/80'}`}
-                                        >
-                                            <td className="px-5 py-4 font-semibold text-blue-400">{row.year}</td>
-                                            <td className="px-5 py-4 text-gray-200">₹{row.invested.toLocaleString('en-IN')}</td>
-                                            <td className="px-5 py-4 text-cyan-300">₹{row.value.toLocaleString('en-IN')}</td>
-                                            <td className="px-5 py-4 text-green-400 font-medium">₹{row.gains.toLocaleString('en-IN')}</td>
-                                        </tr>
-                                    ))}
+                                    <tr>
+                                        <td colSpan={4} className="p-0">
+                                            <div
+                                                ref={containerRef}
+                                                style={{
+                                                    overflow: 'hidden',
+                                                    transition: 'max-height 0.6s ease-in-out',
+                                                }}
+                                            >
+                                                <div ref={contentRef}>
+                                                    {result.chartData.map((row, index) => (
+                                                        <div
+                                                            key={row.year}
+                                                            className={`grid grid-cols-4 px-5 py-4 border-t border-gray-700 transition-all duration-300 hover:scale-[1.015] hover:shadow-md ${
+                                                                index % 2 === 0 ? 'bg-[#0f172a]/80' : 'bg-[#1e293b]/80'
+                                                            }`}
+                                                        >
+                                                            <div className="text-blue-400 font-semibold">{row.year}</div>
+                                                            <div className="text-gray-200">₹{row.invested.toLocaleString('en-IN')}</div>
+                                                            <div className="text-cyan-300">₹{row.value.toLocaleString('en-IN')}</div>
+                                                            <div className="text-green-400 font-medium">₹{row.gains.toLocaleString('en-IN')}</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
+                        {result.chartData.length > 5 && (
+                            <div className="mt-4 text-center">
+                                <button
+                                    onClick={() => setShowAll(!showAll)}
+                                    className="text-sm text-blue-400 hover:text-blue-300 transition"
+                                >
+                                    {showAll ? 'Show Less ▲' : 'Show More ▼'}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -174,20 +226,6 @@ export default function GoalBasedSIP() {
     )
 }
 
-function InputField({ label, value, onChange }) {
-    return (
-        <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">{label}</label>
-            <input
-                type="tel"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                placeholder="Enter value..."
-                className="w-full bg-[#111827] text-white rounded-lg border border-gray-600 px-3 py-2 text-sm outline-none ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-blue-500"
-            />
-        </div>
-    )
-}
 
 
 

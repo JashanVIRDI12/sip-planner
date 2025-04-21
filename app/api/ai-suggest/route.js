@@ -25,6 +25,6 @@ export async function POST(req) {
         return Response.json({ error: "AI processing failed" }, { status: 500 });
     }
 }
-console.log("🔑 ENV API KEY:", process.env.OPENROUTER_API_KEY);
+
 
 

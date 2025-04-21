@@ -110,30 +110,47 @@ export default function MutualFundPage() {
 
     useEffect(() => {
         async function getAISuggestion() {
-            if (!profile) return
-            setIsLoading(true)
-            const prompt = `You are a professional investment advisor.
+            if (!profile) return;
+            setIsLoading(true);
+
+            const messages = [
+                {
+                    role: "user",
+                    content: [
+                        {
+                            type: "text",
+                            text: `You are a professional investment advisor.
 
 Based on this asset allocation for a ${profile.toLowerCase()}-risk profile investor in India:
 ${allocations[profile].map(a => `${a.name} - ${a.value}%`).join(', ')}.
 
 Suggest a realistic and beginner-friendly SIP investment strategy using 2-3 mutual fund examples per category. 
-Structure the output in **clear bullet points or paragraphs** — do **not** use markdown tables or divider lines (e.g., \`|---|\`).
+Structure the output in clear bullet points or paragraphs — do not use markdown tables or divider lines.
 
 Keep the response under 150 words. 
-Use a helpful, concise, and confident tone, as if you're guiding a new investor.
-`
+Write like you're guiding a new investor.`,
+                        },
+                        {
+                            type: "image_url",
+                            image_url: {
+                                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+                            }
+                        }
+                    ]
+                }
+            ];
 
-            const result = await fetchAIResponse([{ role: "user", content: prompt }])
-            setAiMessage(result)
-            setIsLoading(false)
+            const result = await fetchAIResponse(messages);
+            setAiMessage(result);
+            setIsLoading(false);
         }
 
-        getAISuggestion()
-    }, [profile])
+        getAISuggestion();
+    }, [profile]);
+
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 pt-12 pb-2">
+        <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 pt-12 pb-5">
             <div className="max-w-5xl mx-auto">
                 <h1 className="text-5xl font-bold text-center mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-600 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x">
                     SIP Asset Allocation

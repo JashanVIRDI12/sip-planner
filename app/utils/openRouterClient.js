@@ -6,12 +6,11 @@ export async function fetchAIResponse(messages) {
             body: JSON.stringify({ messages }),
         });
 
-        const text = await response.text();
-
-        const data = JSON.parse(text);
+        const data = await response.json();
         return data.result || "No response from AI";
     } catch (error) {
         return "AI is currently unavailable. Please try again later.";
     }
 }
+
 

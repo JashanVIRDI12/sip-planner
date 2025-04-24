@@ -9,7 +9,7 @@ export async function POST(req) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                model: "nvidia/llama-3.1-nemotron-70b-instruct:free",
+                model: "google/gemini-2.0-flash-exp:free",
                 messages,
             }),
         });

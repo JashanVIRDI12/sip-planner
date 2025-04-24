@@ -144,7 +144,7 @@ export default function Navbar() {
                             </button>
 
                             {showDropdown && (
-                                <div className="absolute right-0 mt-4 w-72 rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md shadow-2xl p-5 z-50 animate-fade-in-fast transition-all duration-500">
+                                <div className="absolute right-0 mt-4 w-72 rounded-2xl border border-white/40 bg-white/30 backdrop-blur-md shadow-2xl p-5 z-50 animate-fade-in-fast transition-all duration-500">
                                     <div className="text-sm text-white space-y-2">
                                         <p>
                                             <span className="text-blue-300 font-medium">Email:</span> {profile?.email}

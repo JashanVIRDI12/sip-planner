@@ -15,13 +15,18 @@ export default function InvestmentAdvisor() {
 
     useEffect(() => {
         const getUser = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (session?.user) {
-                setUser(session.user)
+            try {
+                const { data: { session } } = await supabase.auth.getSession()
+                if (session?.user) setUser(session.user)
+            } catch (err) {
+                console.error('Error fetching session:', err)
             }
         }
-        getUser()
+
+        // ✅ Explicitly handle the Promise
+        void getUser()
     }, [])
+
 
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -35,24 +40,40 @@ export default function InvestmentAdvisor() {
         setLoading(true)
         setQuery('')
 
-        const res = await fetch('/api/ai-suggest', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                messages: [
-                    {
-                        role: 'system',
-                        content:
-                            'You are India’s number one SIP (Systematic Investment Plan) investment advisor. Speak to an amateur investor who is just getting started with SIPs. Explain what SIPs are in simple terms, why they are a smart way to invest, how to get started, and give practical beginner-friendly advice. Be encouraging, clear, and avoid jargon. Keep the tone friendly and trustworthy.'
-                    },
-                    { role: 'user', content: q }
-                ]
+        try {
+            const res = await fetch('/api/ai-suggest', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: [
+                        {
+                            role: 'system',
+                            content:
+                                'You are India’s number one SIP (Systematic Investment Plan) investment advisor. Speak to an amateur investor who is just getting started with SIPs. Explain what SIPs are in simple terms, why they are a smart way to invest, how to get started, and give practical beginner-friendly advice. Be encouraging, clear, and avoid jargon. Keep the tone friendly and trustworthy.'
+                        },
+                        { role: 'user', content: q }
+                    ]
+                })
             })
-        })
 
-        const data = await res.json()
-        setResponseList((prev) => [...prev, { type: 'bot', text: data.result || 'Something went wrong.' }])
-        setLoading(false)
+            if (!res.ok) {
+                throw new Error(`Server error: ${res.status}`)
+            }
+
+            const data = await res.json()
+            setResponseList((prev) => [
+                ...prev,
+                { type: 'bot', text: data.result || 'Something went wrong.' }
+            ])
+        } catch (err) {
+            console.error(err)
+            setResponseList((prev) => [
+                ...prev,
+                { type: 'bot', text: 'Sorry, the server is not responding. Please try again later.' }
+            ])
+        } finally {
+            setLoading(false)
+        }
     }
 
     const suggestions = [

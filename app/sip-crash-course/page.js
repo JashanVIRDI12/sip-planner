@@ -149,7 +149,7 @@ export default function SIPCrashCourse() {
         <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12 sm:px-6 lg:px-8 overflow-hidden">
             <div className="max-w-4xl mx-auto">
                 <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">SIP Mastery</h1>
-                <p className="text-gray-300 text-center mb-8 text-base sm:text-lg max-w-2xl mx-auto">Whether you're just getting started or want to invest smarter, this professional guide breaks down SIPs clearly so you can make confident financial decisions.</p>
+                <p className="text-gray-300 text-center mb-8 text-base sm:text-lg max-w-2xl mx-auto">Whether you&apos;re just getting started or want to invest smarter, this professional guide breaks down SIPs clearly so you can make confident financial decisions.</p>
                 <div className="mb-10">
                     <div className="flex justify-between items-center mb-2 text-xs sm:text-sm text-gray-400">
                         <span>Progress: {progress}%</span>

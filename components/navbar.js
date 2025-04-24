@@ -68,56 +68,43 @@ export default function Navbar() {
                     SIP Planner
                 </Link>
 
-                {/* Desktop Nav */}
                 <ul className="hidden md:flex space-x-6 items-center font-semibold tracking-wide text-sm">
-                    {[
-                        { name: 'Home', href: '/' },
-                        { name: 'Calculators', href: '/sip-calculator', submenu: true },
-                        { name: 'Risk Profile', href: '/risk-profile' },
-                        { name: 'Mutual Funds', href: '/mutual-funds' },
-                        { name: 'SIP Mastery', href: '/sip-crash-course' },
-                    ].map((item, i) =>
-                            item.submenu ? (
-                                <li key={i} className="relative group">
-        <span className="text-gray-200 hover:text-white flex items-center gap-1 cursor-pointer transition-all duration-300 relative group">
-          Calculators
-          <svg className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" viewBox="0 0 24 24" fill="none">
-            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" />
-          </svg>
-          <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300 transition-all duration-300 group-hover:w-full rounded-full blur-sm"></span>
-        </span>
-                                    <ul className="absolute z-40 top-full mt-3 w-60 bg-zinc-900/80 border border-zinc-700 backdrop-blur-md rounded-lg shadow-xl opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-300 invisible group-hover:visible">
-                                        <li>
-                                            <Link href="/sip-calculator" className="block px-4 py-2 text-sm text-white hover:bg-blue-800/30 transition">
-                                                Regular SIP Calculator
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/goal-based" className="block px-4 py-2 text-sm text-white hover:bg-blue-800/30 transition">
-                                                Goal-Based SIP Calculator
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </li>
-                            ) : (
-                                <li key={i} className="relative group">
-                                    <Link
-                                        href={item.href}
-                                        className={`${
-                                            pathname === item.href
-                                                ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300'
-                                                : 'text-gray-300 hover:text-white'
-                                        } relative transition-all duration-300`}
-                                    >
-                                        {item.name}
-                                        <span
-                                            className={`absolute bottom-[-4px] left-0 h-0.5 rounded-full bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300 blur-sm transition-all duration-300 ${
-                                                pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
-                                            }`}
-                                        ></span>
-                                    </Link>
-                                </li>
-                            )
+                    {[{ name: 'Home', href: '/' }, { name: 'Calculators', href: '/sip-calculator', submenu: true }, { name: 'Risk Profile', href: '/risk-profile' }, { name: 'Mutual Funds', href: '/mutual-funds' }, { name: 'SIP Mastery', href: '/sip-crash-course' }, { name: 'AI Advisor', href: '/investment-advisor' }].map((item, i) =>
+                        item.submenu ? (
+                            <li key={i} className="relative group">
+                                <span className="text-gray-200 hover:text-white flex items-center gap-1 cursor-pointer transition-all duration-300 relative group">
+                                    Calculators
+                                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" viewBox="0 0 24 24" fill="none">
+                                        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" />
+                                    </svg>
+                                    <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300 transition-all duration-300 group-hover:w-full rounded-full blur-sm"></span>
+                                </span>
+                                <ul className="absolute z-40 top-full mt-3 w-60 bg-zinc-900/80 border border-zinc-700 backdrop-blur-md rounded-lg shadow-xl opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-300 invisible group-hover:visible">
+                                    <li>
+                                        <Link href="/sip-calculator" className="block px-4 py-2 text-sm text-white hover:bg-blue-800/30 transition">
+                                            Regular SIP Calculator
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/goal-based" className="block px-4 py-2 text-sm text-white hover:bg-blue-800/30 transition">
+                                            Goal-Based SIP Calculator
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
+                        ) : (
+                            <li key={i} className="relative group">
+                                <Link
+                                    href={item.href}
+                                    className={`${pathname === item.href ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300' : 'text-gray-300 hover:text-white'} relative transition-all duration-300`}
+                                >
+                                    {item.name}
+                                    <span
+                                        className={`absolute bottom-[-4px] left-0 h-0.5 rounded-full bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300 blur-sm transition-all duration-300 ${pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                                    ></span>
+                                </Link>
+                            </li>
+                        )
                     )}
                 </ul>
 
@@ -190,41 +177,23 @@ export default function Navbar() {
             {mobileOpen && (
                 <div className="md:hidden bg-[#0f172a] px-6 py-6 border-t border-zinc-800 space-y-6 animate-fade-in-up">
                     <ul className="space-y-3 text-sm font-semibold text-white">
-                        {[
-                            { name: 'Home', href: '/' },
-                            { name: 'Calculators', submenu: true },
-                            { name: 'Risk Profile', href: '/risk-profile' },
-                            { name: 'Mutual Funds', href: '/mutual-funds' },
-                            { name: 'SIP Mastery', href: '/sip-crash-course' },
-                        ].map((item, i) =>
+                        {[{ name: 'Home', href: '/' }, { name: 'Calculators', submenu: true }, { name: 'Risk Profile', href: '/risk-profile' }, { name: 'Mutual Funds', href: '/mutual-funds' }, { name: 'SIP Mastery', href: '/sip-crash-course' }, { name: 'AI Advisor', href: '/investment-advisor' }].map((item, i) =>
                             item.submenu ? (
                                 <details key={i} className="group rounded-lg overflow-hidden">
                                     <summary className="flex items-center justify-between px-4 py-2 rounded-lg cursor-pointer text-white hover:bg-blue-900/30 transition-all duration-300 [&::-webkit-details-marker]:hidden">
                                         <span className="group-hover:text-cyan-300 transition">Calculators</span>
-                                        <svg
-                                            className="w-4 h-4 transform group-open:rotate-180 transition-transform duration-300 text-cyan-300"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                        >
+                                        <svg className="w-4 h-4 transform group-open:rotate-180 transition-transform duration-300 text-cyan-300" viewBox="0 0 24 24" fill="none">
                                             <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" />
                                         </svg>
                                     </summary>
                                     <ul className="ml-4 mt-2 space-y-2">
                                         <li>
-                                            <Link
-                                                href="/sip-calculator"
-                                                onClick={() => setMobileOpen(false)}
-                                                className="block px-4 py-2 text-blue-300 hover:bg-blue-800/30 rounded-md transition"
-                                            >
+                                            <Link href="/sip-calculator" onClick={() => setMobileOpen(false)} className="block px-4 py-2 text-blue-300 hover:bg-blue-800/30 rounded-md transition">
                                                 Regular SIP Calculator
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link
-                                                href="/goal-based"
-                                                onClick={() => setMobileOpen(false)}
-                                                className="block px-4 py-2 text-blue-300 hover:bg-blue-800/30 rounded-md transition"
-                                            >
+                                            <Link href="/goal-based" onClick={() => setMobileOpen(false)} className="block px-4 py-2 text-blue-300 hover:bg-blue-800/30 rounded-md transition">
                                                 Goal-Based SIP Calculator
                                             </Link>
                                         </li>
@@ -232,49 +201,13 @@ export default function Navbar() {
                                 </details>
                             ) : (
                                 <li key={i}>
-                                    <Link
-                                        href={item.href}
-                                        onClick={() => setMobileOpen(false)}
-                                        className="block px-4 py-2 rounded-lg bg-transparent hover:bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400 hover:text-white text-gray-200 transition-all duration-300"
-                                    >
+                                    <Link href={item.href} onClick={() => setMobileOpen(false)} className="block px-4 py-2 rounded-lg bg-transparent hover:bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400 hover:text-white text-gray-200 transition-all duration-300">
                                         {item.name}
                                     </Link>
                                 </li>
                             )
                         )}
                     </ul>
-
-                    {user ? (
-                        <div className="text-sm text-gray-200 space-y-3 px-4 pt-4 border-t border-blue-950">
-                            <div className="space-y-1">
-                                <p className="font-medium text-[0.95rem] text-blue-400">
-                                    Email: <span className="text-white">{profile?.email}</span>
-                                </p>
-                                <p className="font-medium text-[0.95rem] text-blue-400">
-                                    Risk Profile: <span className="text-slate-200 ">{profile?.riskProfile}</span>
-                                </p>
-                            </div>
-                            <button
-                                onClick={() => {
-                                    setMobileOpen(false)
-                                    handleSignOut()
-                                }}
-                                className="w-full text-left text-sm font-semibold text-red-400 hover:text-red-300 transition-all duration-200"
-                            >
-                                Sign Out
-                            </button>
-                        </div>
-                    ) : (
-                        <button
-                            onClick={() => {
-                                setMobileOpen(false)
-                                router.push('/sign-in?redirectTo=' + pathname)
-                            }}
-                            className="w-full mt-4 text-sm font-semibold px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg transition"
-                        >
-                            Sign In
-                        </button>
-                    )}
                 </div>
             )}
         </header>

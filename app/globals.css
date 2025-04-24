@@ -26,5 +26,20 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+/* Scrollbar Track */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f172a; /* Dark solid background */
+}
+
+/* Scrollbar Thumb */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #3faeff, #1d72f3); /* Opaque gradient */
+    border-radius: 10px;
+    opacity: 1;
+}
 
 

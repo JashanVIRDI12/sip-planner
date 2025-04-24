@@ -1,73 +1,44 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
-import { CheckCircle, XCircle } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
 function AuthForm() {
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [mode, setMode] = useState('login')
     const [status, setStatus] = useState('')
     const [alreadySignedIn, setAlreadySignedIn] = useState(false)
-    const [capsLock, setCapsLock] = useState(false)
-    const [showRules, setShowRules] = useState(false)
-
-    const [passwordRules, setPasswordRules] = useState({
-        length: false,
-        lowercase: false,
-        uppercase: false,
-        number: false,
-        special: false,
-    })
-
-    const validatePasswordRules = (value) => {
-        setPasswordRules({
-            length: value.length >= 8,
-            lowercase: /[a-z]/.test(value),
-            uppercase: /[A-Z]/.test(value),
-            number: /\d/.test(value),
-            special: /[!@#$%^&*(),.?":{}|<>]/.test(value),
-        })
-    }
-
     const router = useRouter()
-    const searchParams = useSearchParams()
-    const redirectTo = searchParams.get('redirectTo') || '/'
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
                 setAlreadySignedIn(true)
-                setStatus('You are already signed in. Redirecting to home...')
+                setStatus('You are already signed in. Redirecting...')
                 setTimeout(() => router.push('/'), 3000)
             }
         })
     }, [router])
 
-    const handleAuth = async () => {
-        setStatus(mode === 'login' ? 'Logging in...' : 'Creating account...')
-        if (mode === 'login') {
-            const { error } = await supabase.auth.signInWithPassword({ email, password })
-            if (error) {
-                setStatus('Login failed: ' + error.message)
-            } else {
-                setStatus('')
-                router.push(redirectTo)
-            }
+    const handleMagicLogin = async () => {
+        if (!email) {
+            setStatus('Please enter your email.')
+            return
+        }
+
+        setStatus('Sending magic link...')
+        const { error } = await supabase.auth.signInWithOtp({
+            email,
+            options: {
+                emailRedirectTo: `${window.location.origin}/`, // Change to /dashboard if needed
+            },
+        })
+
+        if (error) {
+            setStatus('Failed to send link: ' + error.message)
         } else {
-            const { error } = await supabase.auth.signUp({ email, password })
-            if (error) {
-                if (error.message.toLowerCase().includes('already')) {
-                    setStatus('An account with this email already exists. Please log in.')
-                } else {
-                    setStatus('Signup error: ' + error.message)
-                }
-            } else {
-                setStatus('Signup successful! Please check your email to confirm.')
-            }
+            setStatus('✅ Check your email for the magic login link.')
         }
     }
 
@@ -92,11 +63,10 @@ function AuthForm() {
 
             <div className="z-10 w-full max-w-md px-8 py-10 rounded-2xl shadow-xl border border-blue-500/20 backdrop-blur-xl bg-zinc-900/70 text-white">
                 <h1 className="text-3xl font-extrabold text-center mb-6 text-blue-400 tracking-wide animate-fade-in-up">
-                    {mode === 'login' ? 'Welcome Back' : 'Join SIP Planner'}
+                    Sign in with Magic Link
                 </h1>
 
                 <div className="space-y-6">
-                    {/* Email */}
                     <div className="relative">
                         <input
                             type="email"
@@ -109,106 +79,19 @@ function AuthForm() {
                         />
                         <label
                             htmlFor="email"
-                            className="absolute left-4 top-2 text-xs text-gray-400 transition-all duration-200
-              peer-placeholder-shown:top-5 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-500
-              peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-400"
+                            className="absolute left-4 top-2 text-xs text-gray-400 transition-all duration-200 peer-placeholder-shown:top-5 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-400"
                         >
                             Email
                         </label>
                     </div>
 
-                    {/* Password */}
-                    <div className="relative">
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => {
-                                const val = e.target.value
-                                setPassword(val)
-                                validatePasswordRules(val)
-                            }}
-                            onKeyUp={(e) => setCapsLock(e.getModifierState('CapsLock'))}
-                            className="peer w-full p-4 pt-6 rounded-xl bg-zinc-800 border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent text-sm appearance-auto text-white [color-scheme: dark]"
-                            placeholder="Password"
-                            autoComplete="current-password"
-                        />
-                        <label
-                            htmlFor="password"
-                            className="absolute left-4 top-2 text-xs text-gray-400 transition-all duration-200
-                peer-placeholder-shown:top-5 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-500
-                peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-400"
-                        >
-                            Password
-                        </label>
-
-                        {/* Caps Lock Warning */}
-                        {capsLock && (
-                            <p className="mt-2 text-xs text-yellow-400 font-medium">⚠️ Caps Lock is ON</p>
-                        )}
-
-                        {/* Toggle Password Rules */}
-                        {password && (
-                            <button
-                                type="button"
-                                onClick={() => setShowRules(!showRules)}
-                                className="mt-2 text-xs text-blue-300 underline"
-                            >
-                                {showRules ? 'Hide password rules' : 'Show password rules'}
-                            </button>
-                        )}
-
-                        {/* Password Rules List */}
-                        {showRules && (
-                            <ul className="mt-2 space-y-1 text-xs text-gray-300 pl-2">
-                                {Object.entries(passwordRules).map(([rule, isValid]) => (
-                                    <li key={rule} className="flex items-center gap-2">
-                                        {isValid ? (
-                                            <CheckCircle className="w-4 h-4 text-green-400" />
-                                        ) : (
-                                            <XCircle className="w-4 h-4 text-red-400" />
-                                        )}
-                                        <span>
-                      {rule === 'length' && 'At least 8 characters'}
-                                            {rule === 'lowercase' && 'At least one lowercase letter'}
-                                            {rule === 'uppercase' && 'At least one uppercase letter'}
-                                            {rule === 'number' && 'At least one number'}
-                                            {rule === 'special' && 'At least one special character (!@#$...)'}
-                    </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-
-                    {/* Submit Button */}
                     <button
-                        onClick={handleAuth}
+                        onClick={handleMagicLogin}
                         className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 font-semibold transition-all shadow-lg text-white"
                     >
-                        {mode === 'login' ? 'Log In' : 'Sign Up'}
+                        Send Magic Link
                     </button>
 
-                    {/* Toggle Mode */}
-                    <p className="text-center text-sm text-gray-400">
-                        {mode === 'login' ? (
-                            <>
-                                Don’t have an account?{' '}
-                                <span onClick={() => setMode('signup')} className="text-blue-400 cursor-pointer underline">
-                  Sign up
-                </span>
-                            </>
-                        ) : (
-                            <>
-                                Already have an account?{' '}
-                                <span onClick={() => setMode('login')} className="text-blue-400 cursor-pointer underline">
-                  Log in
-                </span>
-                            </>
-                        )}
-                    </p>
-
-                    {/* Status Message */}
                     {status && (
                         <p className="mt-3 text-sm text-yellow-300 text-center font-medium bg-yellow-900/10 px-4 py-2 rounded-md border border-yellow-700/40">
                             {status}
@@ -227,6 +110,8 @@ export default function AuthWrapper() {
         </Suspense>
     )
 }
+
+
 
 
 

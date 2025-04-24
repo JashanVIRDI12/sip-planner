@@ -43,7 +43,7 @@ export default function InvestmentAdvisor() {
                     {
                         role: 'system',
                         content:
-                            'You are India’s number one SIP investment advisor...'
+                            'You are India’s number one SIP (Systematic Investment Plan) investment advisor. Speak to an amateur investor who is just getting started with SIPs. Explain what SIPs are in simple terms, why they are a smart way to invest, how to get started, and give practical beginner-friendly advice. Be encouraging, clear, and avoid jargon. Keep the tone friendly and trustworthy.'
                     },
                     { role: 'user', content: q }
                 ]

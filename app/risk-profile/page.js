@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
+import {toast} from "sonner";
+
 
 const questions = [
     {
@@ -116,9 +118,10 @@ export default function RiskProfilePage() {
 
     const handleSubmit = () => {
         if (Object.keys(answers).length < questions.length) {
-            alert('Please answer all questions.')
+            toast.error('Please answer all questions before submitting.')
             return
         }
+
         const totalScore = Object.entries(answers).reduce(
             (acc, [qIndex, optIndex]) => acc + questions[qIndex].options[optIndex].score,
             0
@@ -131,6 +134,7 @@ export default function RiskProfilePage() {
             resultRef.current?.scrollIntoView({ behavior: 'smooth' })
         }, 100)
     }
+
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-12">

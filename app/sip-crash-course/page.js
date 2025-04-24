@@ -34,7 +34,7 @@ export default function SIPCrashCourse() {
                 .eq('user_id', user.id)
                 .eq('completed', true)
             if (data) {
-                const updated = chapters.map((ch, idx) => ({
+                const updated = initialChapters.map((ch, idx) => ({
                     ...ch,
                     isExpanded: data.some(p => p.chapter_index === idx),
                 }))
@@ -131,7 +131,7 @@ export default function SIPCrashCourse() {
                 <div className="mb-4 flex justify-center">
                     <ShieldCheck className="w-10 h-10 text-blue-400" />
                 </div>
-                <h2 className="text-xl sm:text-2xl font-semibold mb-2">Hold up! You need to sign in</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold mb-2">Hold up! You need to sign&nbsp;in</h2>
                 <p className="text-gray-300 text-sm mb-6">
                     SIP Mastery is exclusive to signed-in users. Please log in to unlock your journey.
                 </p>

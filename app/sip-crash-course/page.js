@@ -136,7 +136,7 @@ export default function SIPCrashCourse() {
                     SIP Mastery is exclusive to signed-in users. Please log in to unlock your journey.
                 </p>
                 <button
-                    onClick={() => window.location.href = '/login'} // Update route
+                    onClick={() => window.location.href = '/sign-in'} // Update route
                     className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 transition-all text-white px-5 py-2 rounded-lg font-semibold shadow-lg hover:shadow-blue-500/40"
                 >
                     Sign In Now

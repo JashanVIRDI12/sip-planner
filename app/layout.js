@@ -1,6 +1,6 @@
 import { Orbitron , Poppins, Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from "@/components/navbar";
+import Navbar from "../components/navbar";
 import {Toaster} from "sonner";
 
 const poppins = Poppins({

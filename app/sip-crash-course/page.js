@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { ShieldCheck, Lock, Rocket, Sparkles, BookOpenCheck, PlayCircle, CheckCircle, RotateCcw } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '/lib/supabaseClient'
 import { initialChapters } from './chapters'
 import confetti from 'canvas-confetti'
 

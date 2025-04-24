@@ -9,7 +9,7 @@ import {
     Legend,
 } from 'recharts'
 import ReactMarkdown from 'react-markdown'
-import RiskReturnChartToggle from "@/components/RiskReturnChartToggle"
+import RiskReturnChartToggle from "/components/RiskReturnChartToggle"
 import { fetchAIResponse } from "../utils/openRouterClient"
 import { AlertCircle } from 'lucide-react'
 

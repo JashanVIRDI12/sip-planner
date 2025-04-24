@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ChartBarIcon, ArrowTrendingUpIcon, CursorArrowRaysIcon } from '@heroicons/react/24/outline'
-import ParticleBackground from '@/components/ParticleBackground'
+import ParticleBackground from '../components/ParticleBackground'
+
 import Image from 'next/image'
 import Tilt from 'react-parallax-tilt'
 

@@ -146,7 +146,7 @@ export default function InvestmentAdvisor() {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && !loading && handleAsk()}
-                        className="w-full bg-white/10 border border-white/10 rounded-full px-5 py-3 pr-12 text-sm text-white placeholder:text-gray-400 backdrop-blur focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-[#1e293b]/80 border border-white/10 rounded-full px-5 py-3 pr-12 text-sm text-white placeholder:text-slate-400 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                     />
                     <button
                         onClick={() => handleAsk()}

@@ -20,7 +20,7 @@ export default function InvestmentAdvisor() {
                 setUser(session.user)
             }
         }
-        getUser()
+        void getUser()
     }, [])
 
     useEffect(() => {
@@ -43,20 +43,7 @@ export default function InvestmentAdvisor() {
                     {
                         role: 'system',
                         content:
-                            'You are India’s number one SIP (Systematic Investment Plan) investment advisor. You are helping beginner investors in India understand SIPs and mutual fund strategies in a clear, structured, and trustworthy way.\n' +
-                            '\n' +
-                            'Your tone is friendly, simple, and educational — assume the user has little or no experience in finance. Avoid using any special characters, dividers, markdown, or formatting styles. Do not use emojis or symbols.\n' +
-                            '\n' +
-                            'When responding:\n' +
-                            '- Always break your response into clear steps: use phrases like Step 1, Step 2, etc.\n' +
-                            '- Recommend actual mutual funds with specific names and types (e.g. large-cap, flexi-cap, hybrid).\n' +
-                            '- If possible, include estimated returns based on past 5-year averages.\n' +
-                            '- Show realistic fund allocation (e.g. 6000 in equity, 3000 in flexi-cap, 1000 in debt).\n' +
-                            '- Briefly explain the reason behind each fund selection.\n' +
-                            '- If a goal is mentioned (e.g. retirement, child education), align the advice accordingly.\n' +
-                            '- End the message with a follow-up question like: Would you like help picking funds based on your risk profile or time frame?\n' +
-                            '\n' +
-                            'Keep the message concise, structured, and helpful. Keep it under 400 words. No bullet points or formatting — just plain text.'
+                            'You are India’s number one SIP (Systematic Investment Plan) investment advisor. You are helping beginner investors in India understand SIPs and mutual fund strategies in a clear, structured, and trustworthy way.\n\nYour tone is friendly, simple, and educational — assume the user has little or no experience in finance. Avoid using any special characters, dividers, markdown, or formatting styles. Do not use emojis or symbols.\n\nWhen responding:\n- Always break your response into clear steps: use phrases like Step 1, Step 2, etc.\n- Recommend actual mutual funds with specific names and types (e.g. large-cap, flexi-cap, hybrid).\n- If possible, include estimated returns based on past 5-year averages.\n- Show realistic fund allocation (e.g. 6000 in equity, 3000 in flexi-cap, 1000 in debt).\n- Briefly explain the reason behind each fund selection.\n- If a goal is mentioned (e.g. retirement, child education), align the advice accordingly.\n- End the message with a follow-up question like: Would you like help picking funds based on your risk profile or time frame?\n\nKeep the message concise, structured, and helpful. Keep it under 400 words. No bullet points or formatting — just plain text.'
                     },
                     { role: 'user', content: q }
                 ]
@@ -138,7 +125,7 @@ export default function InvestmentAdvisor() {
                             className={`max-w-[90%] px-4 py-3 rounded-xl whitespace-pre-wrap text-sm leading-relaxed ${
                                 item.type === 'user'
                                     ? 'bg-gradient-to-br from-blue-600 to-blue-500 self-end ml-auto text-white'
-                                    : 'bg-white/10 border border-white/10 text-gray-200 backdrop-blur-sm'
+                                    : 'bg-[#1e293b]/70 text-slate-100 border border-white/10 backdrop-blur'
                             }`}
                         >
                             {item.text}
@@ -186,4 +173,5 @@ export default function InvestmentAdvisor() {
         </div>
     )
 }
+
 

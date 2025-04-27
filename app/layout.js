@@ -2,6 +2,7 @@ import { Orbitron , Poppins, Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from "../components/navbar";
 import {Toaster} from "sonner";
+import Footer from "/components/Footer";
 
 const poppins = Poppins({
     weight: ['400', '600', '700'],
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         <Toaster position="top-center" richColors closeButton />
         {children}
+        <Footer />
         </body>
         </html>
     )

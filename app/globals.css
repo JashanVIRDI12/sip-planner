@@ -42,4 +42,30 @@ input[type="number"] {
     opacity: 1;
 }
 
+@keyframes blob {
+    0%,
+    100% {
+        transform: scale(1) translate(0px, 0px);
+    }
+    50% {
+        transform: scale(1.05) translate(20px, -20px);
+    }
+}
+
+.animate-blob {
+    animation: blob 20s infinite ease-in-out;
+}
+
+@keyframes slowMove {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 100px 100px;
+    }
+}
+
+.animate-slowMove {
+    animation: slowMove 40s linear infinite;
+}
 

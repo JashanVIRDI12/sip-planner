@@ -4,8 +4,6 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ChartBarIcon, ArrowTrendingUpIcon, CursorArrowRaysIcon } from '@heroicons/react/24/outline'
-import ParticleBackground from '../components/ParticleBackground'
-
 import Image from 'next/image'
 import Tilt from 'react-parallax-tilt'
 
@@ -33,9 +31,16 @@ export default function HomePage() {
     }, [])
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-[#02040a] via-[#010207] to-black text-white relative overflow-hidden">
-        <ParticleBackground />
-            <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-800/10 via-blue-900/5 to-transparent pointer-events-none" />
+        <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
+            {/* ✨ Sparkle Background */}
+            <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
+                <div className="w-full h-full animate-slowMove bg-[radial-gradient(white_1px,transparent_1px)] [background-size:20px_20px] opacity-10"></div>
+            </div>
+
+            {/* 🧊 Soft Radial Gradient Layer like Footer */}
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-800/10 via-black/20 to-gray-900/10 backdrop-blur-2xl z-0 pointer-events-none" />
+
+            {/* Your Main Content */}
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-28 md:space-y-36">
                 <HeroSection />
                 <FeaturesSection />

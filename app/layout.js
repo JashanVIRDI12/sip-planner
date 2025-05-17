@@ -4,6 +4,7 @@ import Navbar from "../components/navbar";
 import {Toaster} from "sonner";
 import Footer from "/components/Footer";
 
+
 const poppins = Poppins({
     weight: ['400', '600', '700'],
     subsets: ['latin'],
@@ -22,10 +23,15 @@ const orbitron = Orbitron({
     variable: '--font-orbitron',
 })
 
+
 export const metadata = {
-    title: 'SIP App',
-    description: 'Dark theme SIP calculator with Tailwind and custom fonts',
-}
+    title: "SIP Planner",
+    description: "Take control of your financial future with SIP Planner.",
+    icons: {
+        icon: "/sip.png",
+    },
+};
+
 
 export default function RootLayout({ children }) {
     return (

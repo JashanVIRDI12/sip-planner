@@ -130,12 +130,6 @@ Structure the output in clear bullet points or paragraphs — do not use markdow
 Keep the response under 150 words. 
 Write like you're guiding a new investor.`,
                         },
-                        {
-                            type: "image_url",
-                            image_url: {
-                                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
-                            }
-                        }
                     ]
                 }
             ];
